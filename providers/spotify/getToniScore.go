@@ -1,7 +1,6 @@
 package spotify
 
 import (
-	"log"
 	"math"
 	"time"
 )
