@@ -6,6 +6,7 @@ import (
 	"log"
 	"slices"
 	"time"
+	"toni-tunes/providers/spotify"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -32,9 +33,10 @@ type DBUser struct {
 	RefreshToken  string             `bson:"refreshToken"`
 	SessionIdList []SessionWithExp   `bson:"sessionIdList"`
 	Provider      OAuthProvider      `bson:"provider"`
-	ScoreHistory  []int              `bson:"scoreHistory"`
+	ScoreHistory  []float32          `bson:"scoreHistory"`
 	Username      string             `bson:"username"`
 	Email         string             `bson:"email"`
+	LastUpdated   string             `bson:"lastUpdated"`
 }
 
 // get a user by their database id
@@ -78,7 +80,6 @@ func GetUserBySessionId(sessionId string) (*DBUser, error) {
 	now := time.Now()
 	if now.After(expires) {
 		// remove this sessionId from database
-		log.Println("removing expired sessionIds from db")
 		newSessionIdList := user.SessionIdList[i+1:]
 		res, err := collection.UpdateByID(context.Background(), user.Id, bson.M{
 			"$set": bson.M{
@@ -104,8 +105,15 @@ func InsertUser(user *DBUser) (string, error) {
 		return "", err
 	}
 
-	expires := time.Now().Add(24 * time.Hour)
+	expires := time.Now().Add(spotify.REFRESH_PERIOD)
 	expiresString, err := expires.MarshalText()
+	if err != nil {
+		return "", err
+	}
+
+	// last updated value for new users so, upon request, we will calculate a score for them
+	newLastUpdated := time.Now().Add(-spotify.REFRESH_PERIOD)
+	newLastUpdatedString, err := newLastUpdated.MarshalText()
 	if err != nil {
 		return "", err
 	}
@@ -122,6 +130,7 @@ func InsertUser(user *DBUser) (string, error) {
 			"scoreHistory": []int{},
 			"providerId":   user.ProviderId,
 			"provider":     user.Provider,
+			"lastUpdated":  newLastUpdatedString,
 		},
 		"$push": bson.M{
 			"sessionIdList": SessionWithExp{
@@ -140,4 +149,35 @@ func InsertUser(user *DBUser) (string, error) {
 	}
 
 	return sessionId, nil
+}
+
+func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) error {
+	lastUpdated := time.Now()
+	lastedUpdatedString, err := lastUpdated.MarshalText()
+	if err != nil {
+		return err
+	}
+
+	set := bson.M{
+		"lastUpdated": lastedUpdatedString,
+	}
+	if newAccessToken != "" {
+		set["accessToken"] = newAccessToken
+	}
+
+	collection := GetCollection(USER_COLLECTION)
+	res, err := collection.UpdateByID(context.Background(), id, bson.M{
+		"$set": set,
+		"$push": bson.M{
+			"scoreHistory": score,
+		},
+	})
+	if err != nil {
+		return err
+	}
+	if res.ModifiedCount == 0 {
+		return fmt.Errorf("score not appended to anything")
+	}
+
+	return nil
 }

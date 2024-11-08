@@ -3,13 +3,15 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 	"toni-tunes/db"
+	"toni-tunes/providers/spotify"
 )
 
 type ToniTunesProfile struct {
-	Id           string `json:"id"`
-	Username     string `json:"username"`
-	ScoreHistory []int  `json:"scoreHistory"`
+	Id           string    `json:"id"`
+	Username     string    `json:"username"`
+	ScoreHistory []float32 `json:"scoreHistory"`
 }
 
 func Profile(w http.ResponseWriter, r *http.Request) {
@@ -18,13 +20,36 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	var user db.DBUser
 	user, ok := ctx.Value("user").(db.DBUser)
 	if !ok {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("something went wrong, please try again."))
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("you are not signed in"))
 		return
 	}
 
+	var lastUpdated time.Time
+	err := lastUpdated.UnmarshalText([]byte(user.LastUpdated))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("something went wrong, please try again"))
+		return
+	}
+	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) {
+		score, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("something went wrong, please try again"))
+			return
+		}
+		err = db.AppendScore(user.Id, score, newAccessToken)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("something went wrong, please try again"))
+			return
+		}
+		user.ScoreHistory = append(user.ScoreHistory, score)
+	}
+
 	// only send the 10 most recent scores
-	var history []int
+	var history []float32
 	if len(user.ScoreHistory) <= 10 {
 		history = user.ScoreHistory
 	} else {
