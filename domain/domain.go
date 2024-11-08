@@ -1,3 +1,3 @@
 package domain
 
-var DOMAIN string = "https://accessiscan.vercel.app"
+var DOMAIN string = "https://toni-tunes.vercel.app"
