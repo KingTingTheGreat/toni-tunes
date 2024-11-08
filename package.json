@@ -3,24 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently \"next dev --turbopack\" \"air || ~/go/bin/air || go run main.go\"",
+    "dev-frontend": "next dev --turbopack",
+    "dev-backend": "air || ~/go/bin/air || go run main.go",
     "build": "next build",
+    "build-frontend": "next build",
+    "build-backend": "go build",
+    "local-build": "go build && next build",
     "start": "next start",
+    "start-frontend": "next start",
+    "start-backend": "./toni-tunes",
+    "local-start": "concurrently \"next start\" \"./toni-tunes\"",
     "lint": "next lint"
   },
   "dependencies": {
+    "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
-    "next": "15.0.3"
+    "react-dom": "19.0.0-rc-66855b96-20241106"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "concurrently": "^9.1.0",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.3"
+    "typescript": "^5"
   }
 }
