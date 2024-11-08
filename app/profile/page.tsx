@@ -7,11 +7,14 @@ export default async function Profile() {
 
   const res = await fetch(DOMAIN + `/api/profile?sessionId=${sessionId}`);
 
-  console.log(await res.text());
-
-  return (
-    <div>
-      <p>Profile</p>
-    </div>
-  );
+  try {
+    const profile = await res.json();
+    return <div>{profile.scoreHistory}</div>;
+  } catch {
+    return (
+      <div>
+        <p>please sign in</p>
+      </div>
+    );
+  }
 }
