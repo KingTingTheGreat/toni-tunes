@@ -3,8 +3,10 @@ package cookies
 import (
 	"net/http"
 	"os"
+	"time"
 )
 
+const COOKIE_LIFETIME = 7 * 24 * time.Hour
 const SESSION_ID_COOKIE_NAME = "toni-tunes-session-id"
 
 func SetSessionId(w http.ResponseWriter, sessionId string) {
@@ -20,6 +22,8 @@ func SetSessionId(w http.ResponseWriter, sessionId string) {
 		Secure:   secure,
 		HttpOnly: true,
 		Path:     "/",
+		Expires:  time.Now().Add(COOKIE_LIFETIME),
+		SameSite: http.SameSiteStrictMode,
 	}
 
 	http.SetCookie(w, &cookie)
