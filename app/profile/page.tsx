@@ -3,6 +3,7 @@ import { DOMAIN } from "@/domain/domain";
 import { ProfileProps } from "@/types";
 import { cookies } from "next/headers";
 import ScoreDisplay from "@/components/scoreDisplay";
+import Link from "next/link";
 
 export default async function Profile() {
   const sessionId = getSessionIdCookie(await cookies());
@@ -19,7 +20,7 @@ export default async function Profile() {
   } catch {
     return (
       <div>
-        <p>please sign in</p>
+        <Link href="/">please sign in</Link>
       </div>
     );
   }
