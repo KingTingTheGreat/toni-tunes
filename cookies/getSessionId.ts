@@ -7,7 +7,11 @@ export default function getSessionIdCookie(
 ): string | null {
   const cookie = cookieStore.get(SESSION_ID_COOKIE);
 
-  if (!cookie) return null;
+  if (!cookie) {
+    console.log("cookie is null");
+    return null;
+  }
 
+  console.log("cookie not null", cookie.value);
   return cookie.value;
 }

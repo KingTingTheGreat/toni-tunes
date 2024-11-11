@@ -15,7 +15,7 @@ func UserInfo(next http.Handler) http.Handler {
 		if sessionId == "" {
 			sessionId = r.URL.Query().Get("sessionId")
 			if sessionId == "" {
-				log.Println("no session id")
+				log.Println("no session id", cookies.GetSessionId(r), r.URL.Query().Get("sessionId"))
 				next.ServeHTTP(w, r)
 				return
 			}
