@@ -2,9 +2,7 @@ package spotify_handlers
 
 import (
 	"net/http"
-	"toni-tunes/cookies"
 	"toni-tunes/db"
-	"toni-tunes/domain"
 	"toni-tunes/providers/spotify"
 )
 
@@ -49,6 +47,8 @@ func SpotifyCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookies.SetSessionId(w, sessionId)
-	http.Redirect(w, r, domain.DOMAIN+"/profile", http.StatusSeeOther)
+	// cookies.SetSessionId(w, sessionId)
+	// http.Redirect(w, r, domain.DOMAIN+"/profile", http.StatusSeeOther)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(sessionId))
 }

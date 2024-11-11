@@ -1,4 +1,4 @@
-import getSessionIdCookie from "@/cookies/getSessionId";
+import { getSessionIdCookie } from "@/cookies/sessionId";
 import { DOMAIN } from "@/domain/domain";
 import { ProfileProps } from "@/types";
 import { cookies } from "next/headers";
