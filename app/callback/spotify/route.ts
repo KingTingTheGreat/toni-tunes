@@ -23,5 +23,5 @@ export async function GET(req: NextRequest) {
 
   const res = NextResponse.redirect(DOMAIN + "/profile");
   setSessionIdCookie(res, sessionId);
-  return;
+  return res;
 }
