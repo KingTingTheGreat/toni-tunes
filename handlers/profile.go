@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 	"toni-tunes/db"
@@ -34,6 +35,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	}
 	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) {
 		score, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
+		log.Println("getting newest score")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("something went wrong, please try again"))
@@ -46,6 +48,8 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		user.ScoreHistory = append(user.ScoreHistory, score)
+	} else {
+		log.Println("not getting new score", lastUpdated)
 	}
 
 	// only send the 10 most recent scores
