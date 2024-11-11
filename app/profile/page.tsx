@@ -2,6 +2,7 @@ import { getSessionIdCookie } from "@/cookies/sessionId";
 import { DOMAIN } from "@/domain/domain";
 import { ProfileProps } from "@/types";
 import { cookies } from "next/headers";
+import ScoreDisplay from "@/components/scoreDisplay";
 
 export default async function Profile() {
   const sessionId = getSessionIdCookie(await cookies());
@@ -12,9 +13,7 @@ export default async function Profile() {
     const profile: ProfileProps = await res.json();
     return (
       <div>
-        {profile.scoreHistory.map((score, i) => (
-          <p key={i}>{score}</p>
-        ))}
+        <ScoreDisplay scoreHistory={profile.scoreHistory} />
       </div>
     );
   } catch {
