@@ -22,5 +22,6 @@ export async function GET(req: NextRequest) {
   const sessionId = await backendRes.text();
 
   const res = NextResponse.redirect(DOMAIN + "/profile");
-  return setSessionIdCookie(res, sessionId);
+  setSessionIdCookie(res, sessionId);
+  return;
 }

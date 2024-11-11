@@ -3,17 +3,13 @@ import { NextResponse } from "next/server";
 
 const SESSION_ID_COOKIE = "toni-tunes-session-id";
 
-export function setSessionIdCookie(
-  res: NextResponse,
-  sessionId: string,
-): NextResponse {
+export function setSessionIdCookie(res: NextResponse, sessionId: string) {
   res.cookies.set(SESSION_ID_COOKIE, sessionId, {
     httpOnly: true,
     secure: process.env.ENVIRONMENT !== "dev",
     maxAge: 60 * 60 * 24 * 7, // one week
     path: "/",
   });
-  return res;
 }
 
 export function getSessionIdCookie(
