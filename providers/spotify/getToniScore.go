@@ -1,6 +1,7 @@
 package spotify
 
 import (
+	"log"
 	"time"
 )
 
@@ -21,7 +22,10 @@ func GetToniScore(accessToken, refreshToken string) (float32, string, error) {
 		total += 100 - track.Popularity
 	}
 
-	score := float32(total) / float32(topTracksRes.Total) * 100
+	log.Println("total", total)
+	log.Println("length", len(topTracksRes.Items))
+
+	score := float32(total) / float32(len(topTracksRes.Items))
 
 	// truncate to hundreths
 	return float32(int(score*100)) / 100, newAccessToken, nil
