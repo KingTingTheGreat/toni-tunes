@@ -62,10 +62,6 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// recs, newNewAccessToken, err := spotify.GetRecs(user.AccessToken, user.RefreshToken)
-		// log.Printf(newNewAccessToken)
-		// log.Printf("recommendations: %v", recs)
-
 		user.ScoreHistory = append(user.ScoreHistory, score)
 	} else {
 		log.Println("not getting new score", lastUpdated)
