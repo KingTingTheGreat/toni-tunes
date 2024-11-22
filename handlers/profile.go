@@ -79,7 +79,6 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		Id:           user.Id.Hex(),
 		Username:     user.Username,
 		ScoreHistory: history,
-		//rec
 	}
 
 	// profile := ToniTunesProfile{
