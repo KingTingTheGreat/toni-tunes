@@ -18,10 +18,11 @@ type Seed struct {
 	Href                string `json:"href"`
 }
 
-func GetRecommendation(accessToken, refreshToken string, spotifyId string) (*SpotifyTrack, string, error) {
+func GetRecommendation(accessToken, refreshToken string, track SpotifyTrack) (*SpotifyTrack, string, error) {
 	// Fetch recommendation from Spotify API
-	body, newAccessToken, err := spotifyRequest(accessToken, refreshToken, "https://api.spotify.com/v1/recommendation?limit=1&seed_tracks="+spotifyId+"&target_popularity=40")
-	fmt.Print("raw body", string(body))
+	body, newAccessToken, err := spotifyRequest(accessToken, refreshToken, "https://api.spotify.com/v1/recommendations?limit=1&seed_tracks=" + track.ID + "&max_popularity=40")
+	// fmt.Println("cur song", track.Name, string(body))
+	// fmt.Println("cur id", track.ID, string(body))
 	// fmt.Print(" ")
 	if err != nil {
 		return nil, "", err
@@ -34,7 +35,7 @@ func GetRecommendation(accessToken, refreshToken string, spotifyId string) (*Spo
 		return nil, "", err
 	}
 
-	fmt.Printf("Fetched Recommendation: %+v", recommendation)
+	// fmt.Printf("Fetched Recommendation: %+v", recommendation)
 
 	// Ensure there is at least one track in the response
 	if len(recommendation.Tracks) == 0 {
@@ -44,7 +45,7 @@ func GetRecommendation(accessToken, refreshToken string, spotifyId string) (*Spo
 
 	// Extract the first track
 	firstTrack := recommendation.Tracks[0]
-	// log.Printf("Selected Track: %+v", firstTrack)
+	// fmt.Printf("Selected Track: %+v", firstTrack)
 
 	return &firstTrack, newAccessToken, nil
 }

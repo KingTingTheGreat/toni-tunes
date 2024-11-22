@@ -1,76 +1,51 @@
 package spotify
 
 import (
+	"fmt"
 	"time"
 )
 
 const REFRESH_PERIOD = 24 * time.Hour
 
-type similarTrack struct {
-	Track     string
-	SimilarTo string
-	TrackPop  int
+type DbTrack struct {
+	Name        string          `json:"name"`
+	Artists  	[]SpotifyArtist	`json:"artists"`
+	Href        string          `json:"href"`
+	ID          string          `json:"id"`
+	AlbumImage  string  		`json:"url"`
 }
 
-func GetToniScore(accessToken, refreshToken string) (float32, string, error) {
+func GetToniScore(accessToken, refreshToken string) (float32, []DbTrack, string, error) {
 	topTracksRes, newAccessToken, err := GetTopTracks(accessToken, refreshToken)
 	if err != nil {
-		return 0, "", err
+		return 0, []DbTrack{}, "", err
 	}
 
 	if topTracksRes.Total == 0 {
-		return 0, newAccessToken, nil
+		return 0, []DbTrack{}, "", err
 	}
 
 	total := 0
-	count := 0
-	for _, track := range topTracksRes.Items {
+	var similarTracks []DbTrack
+
+	for i, track := range topTracksRes.Items {
 		total += 100 - track.Popularity
-		count += 100
-		// fmt.Println("lalala", track.Name)
+		if i < 5 { // Limit recommendations to first 5 tracks
+			recTrack, _, err := GetRecommendation(accessToken, refreshToken, track)
+			if err != nil {
+				continue
+			}
+			fmt.Println("the recommended track for", track.Name, "is", recTrack.Name)
+			similarTracks = append(similarTracks, DbTrack{recTrack.Name, recTrack.Artists, recTrack.Href, recTrack.ID, recTrack.Album.Images[0].Url})
+		}
 	}
+	fmt.Println("Similar tracks:", similarTracks)
 
-
-	log.Println("total", total)
-	log.Println("length", len(topTracksRes.Items))
+	// log.Println("total", total)
+	// log.Println("length", len(topTracksRes.Items))
 
 	score := float32(total) / float32(len(topTracksRes.Items))
 
 	// truncate to hundredths
-	return float32(int(score*100)) / 100, newAccessToken, nil
-}
-
-// GetRecs fetches track recommendations for the user's top tracks
-func GetRecs(accessToken, refreshToken string) ([]similarTrack, string, error) {
-	var similarTracks []similarTrack
-
-	topTracksRes, newAccessToken, err := GetTopTracks(accessToken, refreshToken)
-	if err != nil {
-		return similarTracks, "", err
-	}
-
-	if topTracksRes.Total == 0 {
-		return similarTracks, newAccessToken, nil
-	}
-
-	for i, track := range topTracksRes.Items {
-		if i < 5 { // Limit to first 5 tracks
-			parts := strings.Split(track.Uri, ":")
-			spotifyId := parts[len(parts)-1]
-
-			recTrack, _, err := GetRecommendation(accessToken, refreshToken, spotifyId)
-			if err != nil {
-				continue
-			}
-			fmt.Println("the recommended track was", recTrack)
-			similarTracks = append(similarTracks, similarTrack{
-				Track:     recTrack.Name,
-				SimilarTo: track.Name,
-				TrackPop:  recTrack.Popularity,
-			})
-		}
-	}
-
-    fmt.Println("Similar tracks:", similarTracks)
-	return similarTracks, newAccessToken, nil
+	return float32(int(score*100)) / 100, similarTracks, newAccessToken, nil
 }

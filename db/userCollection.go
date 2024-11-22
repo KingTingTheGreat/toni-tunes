@@ -27,16 +27,17 @@ const (
 )
 
 type DBUser struct {
-	ProviderId    string             `bson:"providerId"`
-	Id            primitive.ObjectID `bson:"_id"`
-	AccessToken   string             `bson:"accessToken"`
-	RefreshToken  string             `bson:"refreshToken"`
-	SessionIdList []SessionWithExp   `bson:"sessionIdList"`
-	Provider      OAuthProvider      `bson:"provider"`
-	ScoreHistory  []float32          `bson:"scoreHistory"`
-	Username      string             `bson:"username"`
-	Email         string             `bson:"email"`
-	LastUpdated   string             `bson:"lastUpdated"`
+	ProviderId    string             		`bson:"providerId"`
+	Id            primitive.ObjectID 		`bson:"_id"`
+	AccessToken   string             		`bson:"accessToken"`
+	RefreshToken  string             		`bson:"refreshToken"`
+	SessionIdList []SessionWithExp   		`bson:"sessionIdList"`
+	Provider      OAuthProvider      		`bson:"provider"`
+	ScoreHistory  []float32          		`bson:"scoreHistory"`
+	CurrentRecs   []spotify.DbTrack  		`bson:"CurrentRecs"`
+	Username      string             		`bson:"username"`
+	Email         string             		`bson:"email"`
+	LastUpdated   string             		`bson:"lastUpdated"`
 }
 
 // get a user by their database id
@@ -151,7 +152,7 @@ func InsertUser(user *DBUser) (string, error) {
 	return sessionId, nil
 }
 
-func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) error {
+func AppendScore(id primitive.ObjectID, score float32, recommendation []spotify.DbTrack, newAccessToken string) error {
 	lastUpdated := time.Now()
 	lastedUpdatedString, err := lastUpdated.MarshalText()
 	if err != nil {
@@ -160,6 +161,7 @@ func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) er
 
 	set := bson.M{
 		"lastUpdated": lastedUpdatedString,
+		"currentRecs": recommendation,
 	}
 	if newAccessToken != "" {
 		set["accessToken"] = newAccessToken
