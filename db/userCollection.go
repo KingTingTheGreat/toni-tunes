@@ -27,17 +27,17 @@ const (
 )
 
 type DBUser struct {
-	ProviderId    string             		`bson:"providerId"`
-	Id            primitive.ObjectID 		`bson:"_id"`
-	AccessToken   string             		`bson:"accessToken"`
-	RefreshToken  string             		`bson:"refreshToken"`
-	SessionIdList []SessionWithExp   		`bson:"sessionIdList"`
-	Provider      OAuthProvider      		`bson:"provider"`
-	ScoreHistory  []float32          		`bson:"scoreHistory"`
-	CurrentRecs   []spotify.DbTrack  		`bson:"CurrentRecs"`
-	Username      string             		`bson:"username"`
-	Email         string             		`bson:"email"`
-	LastUpdated   string             		`bson:"lastUpdated"`
+	ProviderId    string             `bson:"providerId"`
+	Id            primitive.ObjectID `bson:"_id"`
+	AccessToken   string             `bson:"accessToken"`
+	RefreshToken  string             `bson:"refreshToken"`
+	SessionIdList []SessionWithExp   `bson:"sessionIdList"`
+	Provider      OAuthProvider      `bson:"provider"`
+	ScoreHistory  []float32          `bson:"scoreHistory"`
+	CurrentRecs   []spotify.DbTrack  `bson:"CurrentRecs"`
+	Username      string             `bson:"username"`
+	Email         string             `bson:"email"`
+	LastUpdated   string             `bson:"lastUpdated"`
 }
 
 // get a user by their database id

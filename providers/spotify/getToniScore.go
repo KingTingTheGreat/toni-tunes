@@ -8,11 +8,11 @@ import (
 const REFRESH_PERIOD = 24 * time.Hour
 
 type DbTrack struct {
-	Name        string          `json:"name"`
-	Artists  	[]SpotifyArtist	`json:"artists"`
-	Href        string          `json:"href"`
-	ID          string          `json:"id"`
-	AlbumImage  string  		`json:"url"`
+	Name       string          `json:"name"`
+	Artists    []SpotifyArtist `json:"artists"`
+	Href       string          `json:"href"`
+	ID         string          `json:"id"`
+	AlbumImage string          `json:"url"`
 }
 
 func GetToniScore(accessToken, refreshToken string) (float32, []DbTrack, string, error) {
