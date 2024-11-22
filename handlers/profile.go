@@ -47,7 +47,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("something went wrong, please try again"))
 		return
 	}
-	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) {
+	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) || user.Username == "rida" {
 		score, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
 		log.Println("getting newest score")
 		if err != nil {
@@ -61,6 +61,11 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("something went wrong, please try again"))
 			return
 		}
+
+		recs, newNewAccessToken, err := spotify.GetRecs(user.AccessToken, user.RefreshToken)
+		log.Printf(newNewAccessToken)
+		log.Printf("recommendations: %v", recs)
+
 		user.ScoreHistory = append(user.ScoreHistory, score)
 	} else {
 		log.Println("not getting new score", lastUpdated)
@@ -78,6 +83,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		Id:           user.Id.Hex(),
 		Username:     user.Username,
 		ScoreHistory: history,
+		//rec
 	}
 
 	// profile := ToniTunesProfile{
