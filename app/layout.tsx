@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/header";
+import Root from "@/components/root";
 
 export const metadata: Metadata = {
   title: "Toni Tunes",
@@ -12,12 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`antialiased`}>
-        <Header />
-        {children}
-      </body>
-    </html>
-  );
+  return <Root>{children}</Root>;
 }
