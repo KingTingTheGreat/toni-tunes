@@ -32,7 +32,7 @@ func ConnectDB() *mongo.Client {
 	return client
 }
 
-var db *mongo.Client
+var db *mongo.Client = ConnectDB()
 var collectionCache = map[string]*mongo.Collection{}
 
 func GetCollection(collectionName string) *mongo.Collection {
