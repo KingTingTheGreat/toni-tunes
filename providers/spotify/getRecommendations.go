@@ -19,7 +19,7 @@ type Seed struct {
 }
 
 func GetRecommendation(accessToken, refreshToken string, track SpotifyTrack) (*SpotifyTrack, string, error) {
-	body, newAccessToken, err := spotifyRequest(accessToken, refreshToken, "https://api.spotify.com/v1/recommendations?limit=1&seed_tracks=" + track.ID + "&max_popularity=40")
+	body, newAccessToken, err := spotifyRequest(accessToken, refreshToken, "https://api.spotify.com/v1/recommendations?limit=1&seed_tracks=" + track.ID + "&max_popularity=" + fmt.Sprintf("%d", max(track.Popularity - 1, 1)))
 
 	if err != nil {
 		return nil, "", err
