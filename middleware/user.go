@@ -11,8 +11,8 @@ import (
 func UserInfo(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// get user from db
-		next.ServeHTTP(w, r)
-		return
+		// next.ServeHTTP(w, r)
+		// return
 		sessionId := cookies.GetSessionId(r)
 		if sessionId == "" {
 			sessionId = r.URL.Query().Get("sessionId")
