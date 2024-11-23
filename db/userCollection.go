@@ -34,7 +34,7 @@ type DBUser struct {
 	SessionIdList []SessionWithExp   `bson:"sessionIdList"`
 	Provider      OAuthProvider      `bson:"provider"`
 	ScoreHistory  []float32          `bson:"scoreHistory"`
-	CurrentRecs   []spotify.DbTrack  `bson:"CurrentRecs"`
+	CurrentRecs   []spotify.DbTrack  `bson:"currentRecs"`
 	Username      string             `bson:"username"`
 	Email         string             `bson:"email"`
 	LastUpdated   string             `bson:"lastUpdated"`
@@ -152,7 +152,7 @@ func InsertUser(user *DBUser) (string, error) {
 	return sessionId, nil
 }
 
-func AppendScore(id primitive.ObjectID, score float32, recommendation []spotify.DbTrack, newAccessToken string) error {
+func AppendScore(id primitive.ObjectID, score float32, recommendations []spotify.DbTrack, newAccessToken string) error {
 	lastUpdated := time.Now()
 	lastedUpdatedString, err := lastUpdated.MarshalText()
 	if err != nil {
@@ -161,7 +161,7 @@ func AppendScore(id primitive.ObjectID, score float32, recommendation []spotify.
 
 	set := bson.M{
 		"lastUpdated": lastedUpdatedString,
-		"currentRecs": recommendation,
+		"currentRecs": recommendations,
 	}
 	if newAccessToken != "" {
 		set["accessToken"] = newAccessToken

@@ -28,10 +28,12 @@ func GetToniScore(accessToken, refreshToken string) (float32, []DbTrack, string,
 	total := 0
 	var similarTracks []DbTrack
 
+	// mutex on access token
 	for i, track := range topTracksRes.Items {
+		var recTrack *SpotifyTrack
 		total += 100 - track.Popularity
 		if i < 5 { // Limit recommendations to first 5 tracks
-			recTrack, _, err := GetRecommendation(accessToken, refreshToken, track)
+			recTrack, newAccessToken, err = GetRecommendation(accessToken, refreshToken, track)
 			if err != nil {
 				continue
 			}

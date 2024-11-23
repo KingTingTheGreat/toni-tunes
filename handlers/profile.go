@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"time"
 	"toni-tunes/db"
 	"toni-tunes/providers/spotify"
@@ -47,7 +48,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("something went wrong, please try again"))
 		return
 	}
-	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) {
+	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) || os.Getenv("ENVIRONMENT") == "dev" {
 		score, recommendations, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
 		log.Println("getting newest score")
 		if err != nil {
