@@ -10,6 +10,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -37,6 +38,7 @@ type DBUser struct {
 	Username      string             `bson:"username"`
 	Email         string             `bson:"email"`
 	LastUpdated   string             `bson:"lastUpdated"`
+	LatestScore   float32            `bson:"latestScore"`
 }
 
 // get a user by their database id
@@ -131,6 +133,7 @@ func InsertUser(user *DBUser) (string, error) {
 			"providerId":   user.ProviderId,
 			"provider":     user.Provider,
 			"lastUpdated":  newLastUpdatedString,
+			"latestScore":  0,
 		},
 		"$push": bson.M{
 			"sessionIdList": SessionWithExp{
@@ -160,6 +163,7 @@ func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) er
 
 	set := bson.M{
 		"lastUpdated": lastedUpdatedString,
+		"latestScore": score,
 	}
 	if newAccessToken != "" {
 		set["accessToken"] = newAccessToken
@@ -180,4 +184,38 @@ func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) er
 	}
 
 	return nil
+}
+
+func AllUsers() (*[]DBUser, error) {
+	collection := GetCollection(USER_COLLECTION)
+
+	pipeline := mongo.Pipeline{
+		bson.D{
+			{Key: "$sort", Value: bson.D{
+				{Key: "latestScore", Value: -1},
+			}},
+		},
+	}
+
+	cursor, err := collection.Aggregate(context.Background(), pipeline)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	users := []DBUser{}
+	for cursor.Next(context.Background()) {
+		var user DBUser
+		if err := cursor.Decode(&user); err != nil {
+			continue
+		} else if len(user.ScoreHistory) == 0 {
+			continue
+		}
+		users = append(users, user)
+		if len(users) == 10 {
+			break
+		}
+	}
+
+	return &users, nil
 }

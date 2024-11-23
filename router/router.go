@@ -17,5 +17,7 @@ func Router() *http.ServeMux {
 
 	router.HandleFunc("GET /api/profile", handlers.Profile)
 
+	router.HandleFunc(("GET /api/leaderboard"), handlers.Leaderboard)
+
 	return router
 }
