@@ -24,6 +24,7 @@ export default function Header() {
       </Link>
       <nav className="p-2">
         <NavLink href="/profile">Profile</NavLink>
+        <NavLink href="/leaderboard">Leaderboard</NavLink>
         <NavLink href="/about">About</NavLink>
       </nav>
     </header>
