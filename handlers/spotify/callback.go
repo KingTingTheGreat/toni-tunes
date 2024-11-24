@@ -38,6 +38,7 @@ func SpotifyCallback(w http.ResponseWriter, r *http.Request) {
 		Provider:     db.SPOTIFY,
 		Username:     spotifyUser.DisplayName,
 		Email:        spotifyUser.Email,
+		Image:        spotifyUser.Images[0].Url,
 	}
 
 	sessionId, err := db.InsertUser(&dbUser)

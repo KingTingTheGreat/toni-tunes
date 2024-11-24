@@ -37,6 +37,7 @@ type DBUser struct {
 	ScoreHistory  []float32          `bson:"scoreHistory"`
 	Username      string             `bson:"username"`
 	Email         string             `bson:"email"`
+	Image         string             `bson:"image"`
 	LastUpdated   string             `bson:"lastUpdated"`
 	LatestScore   float32            `bson:"latestScore"`
 }

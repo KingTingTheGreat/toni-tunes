@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -13,7 +13,7 @@ export default function Header() {
     <Typography>
       <Link
         href={href}
-        className="hover:underline m-2 p-1 text-xl transition-all font-medium"
+        className="hover:underline m-2 p-2 text-xl transition-all font-medium"
       >
         {children}
       </Link>
@@ -21,17 +21,25 @@ export default function Header() {
   );
 
   return (
-    <header className="p-2 flex justify-between items-center">
+    <Box
+      component="header"
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "0.5rem",
+      }}
+    >
       <Typography>
         <Link href="/" className="text-5xl logo">
           Toni Tunes
         </Link>
       </Typography>
-      <nav className="p-2 flex">
+      <Box component="nav" sx={{ display: "flex", padding: "0.5rem" }}>
         <NavLink href="/profile">Profile</NavLink>
         <NavLink href="/leaderboard">Leaderboard</NavLink>
         <NavLink href="/about">About</NavLink>
-      </nav>
-    </header>
+      </Box>
+    </Box>
   );
 }

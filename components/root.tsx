@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import { ProfileContextProvider } from "@/context/profileContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
+import Footer from "./footer";
 
 const Root = ({ children }: { children: React.ReactNode }) => {
   const theme = createTheme({
@@ -26,8 +27,13 @@ const Root = ({ children }: { children: React.ReactNode }) => {
         <html lang="en">
           <body className="antialiased">
             <Suspense fallback={<CircularProgress />}>
-              <Header />
-              {children}
+              <div className="flex flex-col justify-between min-h-screen">
+                <div className="bg-blue-200">
+                  <Header />
+                  {children}
+                </div>
+                <Footer />
+              </div>
             </Suspense>
           </body>
         </html>

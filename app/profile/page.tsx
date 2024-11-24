@@ -1,9 +1,9 @@
 import { getSessionIdCookie } from "@/cookies/sessionId";
 import { DOMAIN } from "@/domain/domain";
 import { cookies } from "next/headers";
-import Link from "next/link";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Profile, { ProfileProps } from "@/components/profile";
+import SignIn from "@/components/sign-in";
 
 export default async function ProfilePage() {
   const sessionId = getSessionIdCookie(await cookies());
@@ -21,9 +21,7 @@ export default async function ProfilePage() {
   } catch {
     return (
       <Box>
-        <Typography>
-          <Link href="/">please sign in</Link>
-        </Typography>
+        <SignIn />
       </Box>
     );
   }
