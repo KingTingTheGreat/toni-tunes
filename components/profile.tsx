@@ -11,6 +11,8 @@ export type ProfileProps = {
 };
 
 export default function Profile({ profile }: { profile: ProfileProps }) {
+  const dim = 150;
+
   return (
     <Box
       sx={{
@@ -24,12 +26,13 @@ export default function Profile({ profile }: { profile: ProfileProps }) {
       {profile.image ? (
         <Image
           src={profile.image}
-          width={100}
-          height={100}
+          width={dim}
+          height={dim}
           alt={profile.username}
+          style={{ borderRadius: "50%" }}
         />
       ) : (
-        <AccountCircleIcon sx={{ width: 100, height: 100 }} />
+        <AccountCircleIcon sx={{ width: dim, height: dim }} />
       )}
       <ScoreDisplay scoreHistory={profile.scoreHistory} />
     </Box>

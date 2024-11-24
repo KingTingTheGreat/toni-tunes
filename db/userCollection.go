@@ -128,6 +128,7 @@ func InsertUser(user *DBUser) (string, error) {
 			"refreshToken": user.RefreshToken,
 			"username":     user.Username,
 			"email":        user.Email,
+			"image":        user.Image,
 		},
 		"$setOnInsert": bson.M{
 			"scoreHistory": []int{},
