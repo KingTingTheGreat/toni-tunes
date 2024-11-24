@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"toni-tunes/db"
+	"toni-tunes/db/user_collection"
 	"toni-tunes/providers/spotify"
 )
 
@@ -20,8 +20,8 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	log.Println("profile handler")
 	ctx := r.Context()
 
-	var user db.DBUser
-	user, ok := ctx.Value("user").(db.DBUser)
+	var user user_collection.DBUser
+	user, ok := ctx.Value("user").(user_collection.DBUser)
 	if !ok {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("you are not signed in"))
@@ -43,7 +43,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("something went wrong, please try again"))
 			return
 		}
-		err = db.AppendScore(user.Id, score, newAccessToken)
+		err = user_collection.AppendScore(user.Id, score, newAccessToken)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("something went wrong, please try again"))

@@ -2,7 +2,8 @@ package spotify_handlers
 
 import (
 	"net/http"
-	"toni-tunes/db"
+	"toni-tunes/db/user_collection"
+	"toni-tunes/providers"
 	"toni-tunes/providers/spotify"
 )
 
@@ -31,17 +32,17 @@ func SpotifyCallback(w http.ResponseWriter, r *http.Request) {
 		accessToken = newAccessToken
 	}
 
-	dbUser := db.DBUser{
+	dbUser := user_collection.DBUser{
 		ProviderId:   spotifyUser.SpotifyId,
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-		Provider:     db.SPOTIFY,
+		Provider:     providers.SPOTIFY,
 		Username:     spotifyUser.DisplayName,
 		Email:        spotifyUser.Email,
 		Image:        spotifyUser.Images[0].Url,
 	}
 
-	sessionId, err := db.InsertUser(&dbUser)
+	sessionId, err := user_collection.GetSessionId(&dbUser)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("something went wrong. please try again."))

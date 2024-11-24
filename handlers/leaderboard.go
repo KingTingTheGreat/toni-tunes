@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"toni-tunes/db"
+	"toni-tunes/db/user_collection"
 )
 
 type LeaderboardUser struct {
@@ -13,7 +13,7 @@ type LeaderboardUser struct {
 }
 
 func Leaderboard(w http.ResponseWriter, r *http.Request) {
-	dbUsers, err := db.AllUsers()
+	dbUsers, err := user_collection.AllUsers()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("something went wrong. please try again."))

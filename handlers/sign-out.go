@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 	"toni-tunes/cookies"
-	"toni-tunes/db"
+	"toni-tunes/db/user_collection"
 	"toni-tunes/domain"
 )
 
@@ -13,8 +13,10 @@ func SignOut(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, domain.DOMAIN, http.StatusSeeOther)
 	}
 
-	db.RemoveSessionId(sessionId)
+	user_collection.RemoveSessionId(sessionId)
 	cookies.RemoveSessionId(w)
+
+	go user_collection.RemoveExpired()
 
 	http.Redirect(w, r, domain.DOMAIN, http.StatusSeeOther)
 }
