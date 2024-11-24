@@ -11,6 +11,7 @@ func SignOut(w http.ResponseWriter, r *http.Request) {
 	sessionId := cookies.GetSessionId(r)
 	if sessionId == "" {
 		http.Redirect(w, r, domain.DOMAIN, http.StatusSeeOther)
+		return
 	}
 
 	user_collection.RemoveSessionId(sessionId)
