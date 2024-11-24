@@ -28,7 +28,7 @@ const Root = ({ children }: { children: React.ReactNode }) => {
           <body className="antialiased">
             <Suspense fallback={<CircularProgress />}>
               <div className="flex flex-col justify-between min-h-screen">
-                <div className="bg-blue-200">
+                <div>
                   <Header />
                   {children}
                 </div>
