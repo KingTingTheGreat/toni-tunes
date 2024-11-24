@@ -1,12 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Chewy&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* --background: #0a0a0a; */
-  --background: #050aaa;
-  --foreground: #ededed;
-  /* --foreground: #888; */
+/* :root { */
+/*   /* --background: #0a0a0a; */
+/*   /* --background: #050aaa; */
+/*   /* --foreground: #ededed; */
+/*   /* --foreground: #888; */
+/* } */
+
+.logo {
+  font-family: "Chewy", system-ui;
 }
 
 body {

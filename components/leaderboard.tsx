@@ -1,3 +1,15 @@
+"use client";
+import { useTheme } from "@mui/material/styles";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+
 export type LeaderboardProfile = {
   id: string;
   username: string;
@@ -9,18 +21,79 @@ export default function Leaderboard({
 }: {
   users: LeaderboardProfile[];
 }) {
+  const theme = useTheme();
+  const headerStyle = {
+    fontSize: "1.25rem",
+    border: `2px solid ${theme.palette.primary.main}`,
+  };
+
+  const LeaderboardRow = ({
+    rank,
+    username,
+    score,
+  }: {
+    rank: number;
+    username: string;
+    score: number;
+  }) => {
+    const contentStyle = {
+      fontSize: "1rem",
+      border: `2px solid ${theme.palette.primary.main}`,
+    };
+
+    return (
+      <TableRow>
+        <TableCell
+          sx={{
+            ...contentStyle,
+            color:
+              rank === 1
+                ? "#D4AF37"
+                : rank === 2
+                  ? "#C0C0C0"
+                  : rank === 3
+                    ? "#CD7F32"
+                    : "",
+          }}
+          align="center"
+        >
+          {rank}
+        </TableCell>
+        <TableCell sx={contentStyle} align="center">
+          {username}
+        </TableCell>
+        <TableCell sx={contentStyle} align="center">
+          {score}
+        </TableCell>
+      </TableRow>
+    );
+  };
+
   return (
-    <div className="flex flex-col items-center p-1 m-2">
-      <h2 className="text-4xl p-2 m-1">Leaderboard</h2>
-      <table className="table-auto m-1">
-        <thead>
-          <tr>
-            <TableHeader>Rank</TableHeader>
-            <TableHeader>Username</TableHeader>
-            <TableHeader>Score</TableHeader>
-          </tr>
-        </thead>
-        <tbody>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "0.5rem",
+        margin: "0.5rem",
+      }}
+    >
+      <Typography
+        component="h2"
+        sx={{ fontSize: "2.5rem", padding: "0.25rem", margin: "0.25rem" }}
+      >
+        Leaderboard
+      </Typography>
+      <Table sx={{ width: 200 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={headerStyle}>Rank</TableCell>
+            <TableCell sx={headerStyle}>Username</TableCell>
+            <TableCell sx={headerStyle}>Score</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {users.map((user, i) => (
             <LeaderboardRow
               key={i}
@@ -29,59 +102,8 @@ export default function Leaderboard({
               score={user.score}
             />
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </Box>
   );
 }
-
-const TableHeader = ({ children }: { children: React.ReactNode }) => (
-  <th className="p-2 m-1 text-lg text-[#78CB5F] border-solid border-2 border-[#999]">
-    {children}
-  </th>
-);
-
-const TableContent = ({
-  children,
-  color,
-}: {
-  children: React.ReactNode;
-  color?: string;
-}) => (
-  <td
-    style={{ color }}
-    className="p-1 text-lg text-center border-2 border-[#999]"
-  >
-    {children}
-  </td>
-);
-
-const LeaderboardRow = ({
-  rank,
-  username,
-  score,
-}: {
-  rank: number;
-  username: string;
-  score: number;
-}) => {
-  return (
-    <tr>
-      <TableContent
-        color={
-          rank === 1
-            ? "#d4af37"
-            : rank === 2
-              ? "#c0c0c0"
-              : rank === 3
-                ? "#cd7f32"
-                : ""
-        }
-      >
-        {rank}
-      </TableContent>
-      <TableContent>{username}</TableContent>
-      <TableContent>{score}</TableContent>
-    </tr>
-  );
-};
