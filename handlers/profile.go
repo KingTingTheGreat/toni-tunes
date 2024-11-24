@@ -3,37 +3,25 @@ package handlers
 import (
 	"encoding/json"
 	"log"
-	"math/rand"
 	"net/http"
 	"time"
-	"toni-tunes/db"
+	"toni-tunes/db/user_collection"
 	"toni-tunes/providers/spotify"
 )
-
-func randomHistory() []float32 {
-	history := []float32{}
-	for {
-		history = append(history, rand.Float32()*100)
-		if rand.Intn(1000) < 150 {
-			break
-		}
-	}
-
-	return history
-}
 
 type ToniTunesProfile struct {
 	Id           string    `json:"id"`
 	Username     string    `json:"username"`
 	ScoreHistory []float32 `json:"scoreHistory"`
+	Image        string    `json:"image"`
 }
 
 func Profile(w http.ResponseWriter, r *http.Request) {
 	log.Println("profile handler")
 	ctx := r.Context()
 
-	var user db.DBUser
-	user, ok := ctx.Value("user").(db.DBUser)
+	var user user_collection.DBUser
+	user, ok := ctx.Value("user").(user_collection.DBUser)
 	if !ok {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("you are not signed in"))
@@ -55,7 +43,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("something went wrong, please try again"))
 			return
 		}
-		err = db.AppendScore(user.Id, score, newAccessToken)
+		err = user_collection.AppendScore(user.Id, score, newAccessToken)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("something went wrong, please try again"))
@@ -78,13 +66,8 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		Id:           user.Id.Hex(),
 		Username:     user.Username,
 		ScoreHistory: history,
+		Image:        user.Image,
 	}
-
-	// profile := ToniTunesProfile{
-	// 	Id:           "0",
-	// 	Username:     "username",
-	// 	ScoreHistory: randomHistory(),
-	// }
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(profile)
