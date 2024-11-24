@@ -8,12 +8,7 @@ export default function Footer() {
       sx={{ padding: "0.5rem", display: "flex", justifyContent: "center" }}
     >
       <Typography>
-        <Link
-          href="/api/sign-out"
-          onClick={() => console.log("clicked")}
-          className="p-1"
-          prefetch={false}
-        >
+        <Link href="/api/sign-out" className="p-1" prefetch={false}>
           Sign Out
         </Link>
       </Typography>

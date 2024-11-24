@@ -44,9 +44,7 @@ export default function Header() {
         {profileContext.value ? (
           <NavLink href="/profile">Profile</NavLink>
         ) : (
-          <NavLink href="/api/sign-in/spotify" prefetch={false}>
-            Sign In
-          </NavLink>
+          <NavLink href="/sign-in">Sign In</NavLink>
         )}
         <NavLink href="/leaderboard">Leaderboard</NavLink>
         <NavLink href="/about">About</NavLink>
