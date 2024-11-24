@@ -2,6 +2,8 @@ import Leaderboard, { LeaderboardProfile } from "@/components/leaderboard";
 import { DOMAIN } from "@/domain/domain";
 import { Box, Typography } from "@mui/material";
 
+export const dynamic = "force-dynamic";
+
 export default async function LeaderboardPage() {
   try {
     const res = await fetch(`${DOMAIN}/api/leaderboard`);
