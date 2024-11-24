@@ -15,7 +15,11 @@ func Router() *http.ServeMux {
 	router.HandleFunc("GET /api/sign-in/spotify", spotify_handlers.SpotifySignInRedirect)
 	router.HandleFunc("GET /api/callback/spotify", spotify_handlers.SpotifyCallback)
 
+	router.HandleFunc("GET /api/sign-out", handlers.SignOut)
+
 	router.HandleFunc("GET /api/profile", handlers.Profile)
+
+	router.HandleFunc(("GET /api/leaderboard"), handlers.Leaderboard)
 
 	return router
 }

@@ -34,7 +34,6 @@ type DBUser struct {
 	SessionIdList []SessionWithExp   `bson:"sessionIdList"`
 	Provider      OAuthProvider      `bson:"provider"`
 	ScoreHistory  []float32          `bson:"scoreHistory"`
-	CurrentRecs   []spotify.DbTrack  `bson:"currentRecs"`
 	Username      string             `bson:"username"`
 	Email         string             `bson:"email"`
 	LastUpdated   string             `bson:"lastUpdated"`

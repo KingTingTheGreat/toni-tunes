@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"toni-tunes/cookies"
-	"toni-tunes/db"
+	"toni-tunes/db/user_collection"
 )
 
 func UserInfo(next http.Handler) http.Handler {
@@ -23,7 +23,7 @@ func UserInfo(next http.Handler) http.Handler {
 			}
 		}
 
-		user, err := db.GetUserBySessionId(sessionId)
+		user, err := user_collection.GetUserBySessionId(sessionId)
 		if err != nil {
 			if err.Error() == "redirect" {
 				log.Println("expired sessionId")

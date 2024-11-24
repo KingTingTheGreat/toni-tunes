@@ -1,4 +1,4 @@
-import { ProfileProps } from "@/types";
+import { ProfileProps } from "@/components/profile";
 import { createContext, useContext, useState } from "react";
 
 const defaultState: ProfileContextState = {
