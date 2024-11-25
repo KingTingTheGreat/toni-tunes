@@ -1,29 +1,26 @@
+"use client";
 import { ProfileProps } from "@/components/profile";
 import { createContext, useContext, useState } from "react";
 
-const defaultState: ProfileContextState = {
-  profile: null,
-};
+export const defaultProfileState: ProfileContextState = null;
 
 const ProfileContext = createContext<ProfileContextProps | null>(null);
 
 export const ProfileContextProvider = ({
+  profile,
   children,
 }: {
+  profile: ProfileProps | null;
   children: React.ReactNode;
 }) => {
-  const [state, setState] = useState(defaultState);
+  const [state, setState] = useState<ProfileContextState>(profile);
 
-  const set = (newChanges: Partial<ProfileContextState>) => {
-    const newState = {
-      ...state,
-      ...newChanges,
-    };
-    setState(newState);
+  const set = (profile: ProfileContextState) => {
+    setState(profile);
   };
 
   return (
-    <ProfileContext.Provider value={{ state, set }}>
+    <ProfileContext.Provider value={{ value: state, set }}>
       {children}
     </ProfileContext.Provider>
   );
@@ -40,10 +37,8 @@ export const useProfileContext = (): ProfileContextProps => {
 };
 
 export type ProfileContextProps = {
-  state: ProfileContextState;
+  value: ProfileContextState;
   set: (state: ProfileContextState) => void;
 };
 
-export type ProfileContextState = {
-  profile: ProfileProps | null;
-};
+export type ProfileContextState = ProfileProps | null;

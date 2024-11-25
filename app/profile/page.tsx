@@ -1,28 +1,19 @@
-import { getSessionIdCookie } from "@/cookies/sessionId";
-import { DOMAIN } from "@/domain/domain";
-import { cookies } from "next/headers";
+"use client";
 import { Box } from "@mui/material";
-import Profile, { ProfileProps } from "@/components/profile";
-import SignIn from "@/components/sign-in";
+import Profile from "@/components/profile";
+import { useProfileContext } from "@/context/profileContext";
+import { redirect } from "next/navigation";
 
-export default async function ProfilePage() {
-  const sessionId = getSessionIdCookie(await cookies());
+export default function ProfilePage() {
+  const profileContext = useProfileContext();
 
-  const res = await fetch(DOMAIN + `/api/profile?sessionId=${sessionId}`);
-
-  try {
-    const profile: ProfileProps = await res.json();
-
-    return (
-      <Box>
-        <Profile profile={profile} />
-      </Box>
-    );
-  } catch {
-    return (
-      <Box>
-        <SignIn />
-      </Box>
-    );
+  if (profileContext.value === null) {
+    return redirect("/sign-in");
   }
+
+  return (
+    <Box>
+      <Profile profile={profileContext.value} />
+    </Box>
+  );
 }

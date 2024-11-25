@@ -5,8 +5,15 @@ import { ProfileContextProvider } from "@/context/profileContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
 import Footer from "./footer";
+import { ProfileProps } from "./profile";
 
-const Root = ({ children }: { children: React.ReactNode }) => {
+const Root = ({
+  profile,
+  children,
+}: {
+  profile: ProfileProps | null;
+  children: React.ReactNode;
+}) => {
   const theme = createTheme({
     palette: {
       primary: {
@@ -23,7 +30,7 @@ const Root = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <ProfileContextProvider>
+      <ProfileContextProvider profile={profile}>
         <html lang="en">
           <body className="antialiased">
             <Suspense fallback={<CircularProgress />}>
