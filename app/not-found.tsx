@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { Box, Typography } from "@mui/material";

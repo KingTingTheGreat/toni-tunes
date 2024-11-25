@@ -16,7 +16,7 @@ export default function Home() {
       <Box sx={{ margin: "0.5rem", padding: "2rem" }}>
         <Typography component="p" sx={{ fontSize: "1.5rem", width: "400px" }}>
           Hi, I&apos;m Mr.Toni! Sign in with Spotify, then I will rate your
-          music and give your some recomendabababas!
+          music and give you some recomendabababas!
         </Typography>
         <SentimentSatisfiedAlt fontSize="large" />
       </Box>
