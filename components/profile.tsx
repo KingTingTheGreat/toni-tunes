@@ -3,10 +3,15 @@ import ScoreDisplay from "./scoreDisplay";
 import { Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
+export type ScoreElement = {
+  score: number;
+  date: string;
+};
+
 export type ProfileProps = {
   username: string;
   name: string;
-  scoreHistory: number[];
+  scoreHistory: ScoreElement[];
   image: string;
 };
 
@@ -34,7 +39,9 @@ export default function Profile({ profile }: { profile: ProfileProps }) {
       ) : (
         <AccountCircleIcon sx={{ width: dim, height: dim }} />
       )}
-      <ScoreDisplay scoreHistory={profile.scoreHistory} />
+      {profile.scoreHistory && (
+        <ScoreDisplay scoreHistory={profile.scoreHistory} />
+      )}
     </Box>
   );
 }
