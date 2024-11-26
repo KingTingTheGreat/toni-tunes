@@ -16,6 +16,11 @@ import (
 
 const USER_COLLECTION = "user-collection"
 
+type DBScoreElement struct {
+	Score float32 `bson:"score" json:"score"`
+	Date  string  `bson:"date" json:"date"`
+}
+
 type DBUser struct {
 	ProviderId    string                  `bson:"providerId"`
 	Id            primitive.ObjectID      `bson:"_id"`
@@ -23,7 +28,7 @@ type DBUser struct {
 	RefreshToken  string                  `bson:"refreshToken"`
 	SessionIdList []SessionIdWithExp      `bson:"sessionIdList"`
 	Provider      providers.OAuthProvider `bson:"provider"`
-	ScoreHistory  []float32               `bson:"scoreHistory"`
+	ScoreHistory  []DBScoreElement        `bson:"scoreHistoryWDate"`
 	Username      string                  `bson:"username"`
 	Email         string                  `bson:"email"`
 	Image         string                  `bson:"image"`

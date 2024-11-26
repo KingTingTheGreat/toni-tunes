@@ -4,16 +4,17 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"time"
 	"toni-tunes/db/user_collection"
 	"toni-tunes/providers/spotify"
 )
 
 type ToniTunesProfile struct {
-	Id           string    `json:"id"`
-	Username     string    `json:"username"`
-	ScoreHistory []float32 `json:"scoreHistory"`
-	Image        string    `json:"image"`
+	Id           string                           `json:"id"`
+	Username     string                           `json:"username"`
+	ScoreHistory []user_collection.DBScoreElement `json:"scoreHistory"`
+	Image        string                           `json:"image"`
 }
 
 func Profile(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +36,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("something went wrong, please try again"))
 		return
 	}
-	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) {
+	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) || os.Getenv("ENVIRONMENT") == "dev" {
 		score, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
 		log.Println("getting newest score")
 		if err != nil {
@@ -43,19 +44,22 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("something went wrong, please try again"))
 			return
 		}
-		err = user_collection.AppendScore(user.Id, score, newAccessToken)
+		todayDate, err := user_collection.AppendScore(user.Id, score, newAccessToken)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("something went wrong, please try again"))
 			return
 		}
-		user.ScoreHistory = append(user.ScoreHistory, score)
+		user.ScoreHistory = append(user.ScoreHistory, user_collection.DBScoreElement{
+			Score: score,
+			Date:  todayDate,
+		})
 	} else {
 		log.Println("not getting new score", lastUpdated)
 	}
 
 	// only send the 10 most recent scores
-	var history []float32
+	var history []user_collection.DBScoreElement
 	if len(user.ScoreHistory) <= 10 {
 		history = user.ScoreHistory
 	} else {
