@@ -11,11 +11,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func AppendScore(id primitive.ObjectID, score float32, recommendations []spotify.DbTrack, newAccessToken string) error {
+func AppendScore(id primitive.ObjectID, score float32, recommendations []spotify.DbTrack, newAccessToken string) (string, error) {
 	lastUpdated := time.Now()
 	lastedUpdatedString, err := lastUpdated.MarshalText()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	set := bson.M{
@@ -27,19 +27,25 @@ func AppendScore(id primitive.ObjectID, score float32, recommendations []spotify
 		set["accessToken"] = newAccessToken
 	}
 
+	today := time.Now()
+	todayDate := today.Format("01/02/2006")
+
 	collection := db.GetCollection(USER_COLLECTION)
 	res, err := collection.UpdateByID(context.Background(), id, bson.M{
 		"$set": set,
 		"$push": bson.M{
-			"scoreHistory": score,
+			"scoreHistory": DBScoreElement{
+				Score: score,
+				Date:  todayDate,
+			},
 		},
 	})
 	if err != nil {
-		return err
+		return "", err
 	}
 	if res.ModifiedCount == 0 {
-		return fmt.Errorf("score not appended to anything")
+		return "", fmt.Errorf("score not appended to anything")
 	}
 
-	return nil
+	return todayDate, nil
 }
