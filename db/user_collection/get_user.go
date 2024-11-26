@@ -28,7 +28,7 @@ type DBUser struct {
 	RefreshToken  string                  `bson:"refreshToken"`
 	SessionIdList []SessionIdWithExp      `bson:"sessionIdList"`
 	Provider      providers.OAuthProvider `bson:"provider"`
-	ScoreHistory  []DBScoreElement        `bson:"scoreHistoryWDate"`
+	ScoreHistory  []DBScoreElement        `bson:"scoreHistory"`
 	Username      string                  `bson:"username"`
 	Email         string                  `bson:"email"`
 	Image         string                  `bson:"image"`
@@ -117,10 +117,12 @@ func AllUsers() (*[]DBUser, error) {
 	for cursor.Next(context.Background()) {
 		var user DBUser
 		if err := cursor.Decode(&user); err != nil {
+			log.Println("error decoding")
 			continue
 		} else if len(user.ScoreHistory) == 0 {
 			continue
 		}
+		log.Println("decoding success")
 		users = append(users, user)
 		if len(users) == 10 {
 			break
