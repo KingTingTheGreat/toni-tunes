@@ -8,6 +8,7 @@ import (
 	"time"
 	"toni-tunes/db"
 	"toni-tunes/providers"
+	"toni-tunes/providers/spotify"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -28,6 +29,7 @@ type DBUser struct {
 	RefreshToken  string                  `bson:"refreshToken"`
 	SessionIdList []SessionIdWithExp      `bson:"sessionIdList"`
 	Provider      providers.OAuthProvider `bson:"provider"`
+	CurrentRecs   []spotify.DbTrack       `bson:"currentRecs"`
 	ScoreHistory  []DBScoreElement        `bson:"scoreHistory"`
 	Username      string                  `bson:"username"`
 	Email         string                  `bson:"email"`

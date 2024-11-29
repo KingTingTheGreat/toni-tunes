@@ -37,14 +37,15 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if lastUpdated.Add(spotify.REFRESH_PERIOD).Before(time.Now()) || os.Getenv("ENVIRONMENT") == "dev" {
-		score, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
+		score, recommendations, newAccessToken, err := spotify.GetToniScore(user.AccessToken, user.RefreshToken)
 		log.Println("getting newest score")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("something went wrong, please try again"))
 			return
 		}
-		todayDate, err := user_collection.AppendScore(user.Id, score, newAccessToken)
+
+		todayDate, err := user_collection.AppendScore(user.Id, score, recommendations, newAccessToken)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("something went wrong, please try again"))

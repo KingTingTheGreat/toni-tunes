@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"time"
 	"toni-tunes/db"
+	"toni-tunes/providers/spotify"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) (string, error) {
+func AppendScore(id primitive.ObjectID, score float32, recommendations []spotify.DbTrack, newAccessToken string) (string, error) {
 	lastUpdated := time.Now()
 	lastedUpdatedString, err := lastUpdated.MarshalText()
 	if err != nil {
@@ -20,6 +21,7 @@ func AppendScore(id primitive.ObjectID, score float32, newAccessToken string) (s
 	set := bson.M{
 		"lastUpdated": lastedUpdatedString,
 		"latestScore": score,
+		"currentRecs": recommendations,
 	}
 	if newAccessToken != "" {
 		set["accessToken"] = newAccessToken

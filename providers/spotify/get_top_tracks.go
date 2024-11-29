@@ -28,6 +28,7 @@ type SpotifyTrack struct {
 	Href        string          `json:"href"`
 	TrackNumber int             `json:"track_number"`
 	Popularity  int             `json:"popularity"`
+	ID          string          `json:"id"`
 }
 
 type SpotifyTopTracksResponse struct {
