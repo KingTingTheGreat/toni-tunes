@@ -1,19 +1,26 @@
-"use client";
 import { Box } from "@mui/material";
 import Profile from "@/components/profile";
-import { useProfileContext } from "@/context/profileContext";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/lib/jwt";
 
-export default function ProfilePage() {
-  const profileContext = useProfileContext();
+export default async function ProfilePage() {
+  const cookieStore = await cookies();
 
-  if (profileContext.value === null) {
+  const d = cookieStore.get("mycookie");
+
+  if (!d) {
+    return redirect("/sign-in");
+  }
+
+  const res = verifyJwt(d.value);
+  if (!res.verified) {
     return redirect("/sign-in");
   }
 
   return (
     <Box>
-      <Profile profile={profileContext.value} />
+      <p>{JSON.stringify(res.claims)}</p>
     </Box>
   );
 }

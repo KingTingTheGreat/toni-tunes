@@ -3,17 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev --turbopack\" \"air || ~/go/bin/air || go run main.go\"",
-    "dev-frontend": "next dev --turbopack",
-    "dev-backend": "air || ~/go/bin/air || go run main.go",
+    "dev": "next dev --turbopack",
     "build": "next build",
-    "build-frontend": "next build",
-    "build-backend": "go build",
-    "local-build": "go build && next build",
     "start": "next start",
-    "start-frontend": "next start",
-    "start-backend": "./toni-tunes",
-    "local-start": "concurrently \"next start\" \"./toni-tunes\"",
     "lint": "next lint"
   },
   "dependencies": {
