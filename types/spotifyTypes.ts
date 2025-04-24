@@ -6,7 +6,7 @@ export type SpotifyCreds = {
 export type SpotifyImage = {
   height: number;
   width: number;
-  uri: string;
+  url: string;
 };
 
 export type SpotifyArtist = {

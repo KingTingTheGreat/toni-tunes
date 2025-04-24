@@ -16,5 +16,5 @@ export default async function getSpotifyTopTracks(
 
   const data = await res.data.json();
 
-  return data;
+  return data.items;
 }
