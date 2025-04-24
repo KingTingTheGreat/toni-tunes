@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Root from "@/components/root";
+import { Suspense } from "react";
+import Header from "@/components/header";
+import { CircularProgress } from "@mui/material";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Toni Tunes",
@@ -12,5 +15,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <Root>{children}</Root>;
+  return (
+    <html lang="en">
+      <body className="antialiased">
+        <Suspense fallback={<CircularProgress />}>
+          <div className="flex flex-col justify-between min-h-screen">
+            <div>
+              <Header />
+              {children}
+            </div>
+            <Footer />
+          </div>
+        </Suspense>
+      </body>
+    </html>
+  );
 }
