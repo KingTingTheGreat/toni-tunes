@@ -1,4 +1,3 @@
-import { ScoreElement } from "@/components/profile";
 import { SpotifyTrack } from "./spotifyTypes";
 
 export enum Providers {

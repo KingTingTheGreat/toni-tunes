@@ -2,7 +2,7 @@
 import { useTheme } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 import { LineChart } from "@mui/x-charts";
-import { ScoreElement } from "./profile";
+import { ScoreElement } from "@/types/types";
 
 export default function ScoreDisplay({
   scoreHistory,

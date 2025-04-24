@@ -37,7 +37,7 @@ export type SpotifyTrack = {
 };
 
 export enum SpotifyTimeRanges {
-  shortTerm = "short_term",
-  mediumTerm = "medium_term",
-  longTerm = "long_term",
+  short_term = "short_term",
+  medium_term = "medium_term",
+  long_term = "long_term",
 }

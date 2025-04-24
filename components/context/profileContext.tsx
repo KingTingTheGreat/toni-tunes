@@ -1,5 +1,5 @@
 "use client";
-import { ProfileProps } from "@/components/profile";
+import { ProfileProps } from "@/types/types";
 import { createContext, useContext, useState } from "react";
 
 export const defaultProfileState: ProfileContextState = null;

@@ -2,8 +2,9 @@
 import { verifyJwt } from "@/lib/jwt";
 import { cookies } from "next/headers";
 import getSpotifyTopTracks from "./getSpotifyTopTracks";
+import { SpotifyTimeRanges } from "@/types/spotifyTypes";
 
-export default async function getSpotifyProfile() {
+export default async function getSpotifyProfile(timeRange?: SpotifyTimeRanges) {
   const cookieStore = await cookies();
 
   const d = cookieStore.get("mycookie");
@@ -23,7 +24,7 @@ export default async function getSpotifyProfile() {
   };
 
   console.log("creds", creds);
-  const tracks = await getSpotifyTopTracks(creds);
+  const tracks = await getSpotifyTopTracks(creds, timeRange);
   console.log("tracks after get", tracks);
 
   if (!tracks) {

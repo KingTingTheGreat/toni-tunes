@@ -6,9 +6,10 @@ export default async function getSpotifyTopTracks(
   creds: SpotifyCreds,
   timeRange?: SpotifyTimeRanges,
 ): Promise<SpotifyTrack[] | null> {
+  const tr = timeRange || SpotifyTimeRanges.short_term;
   const res = await spotifyRequest(
     creds,
-    `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange || SpotifyTimeRanges.shortTerm}&limit=50`,
+    `https://api.spotify.com/v1/me/top/tracks?time_range=${tr.toString()}&limit=50`,
   );
 
   if (!res) {

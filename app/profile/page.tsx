@@ -1,5 +1,5 @@
 import QueryWrapper from "@/components/QueryWrapper";
-import SpotifyProfile from "@/components/spotify/profile";
+import SpotifyProfile from "@/components/spotify/SpotifyProfile";
 import { verifyJwt } from "@/lib/jwt";
 import { Providers } from "@/types/types";
 import { cookies } from "next/headers";
