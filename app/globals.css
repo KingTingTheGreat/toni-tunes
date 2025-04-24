@@ -3,12 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root { */
-/*   /* --background: #0a0a0a; */
-/*   /* --background: #050aaa; */
-/*   /* --foreground: #ededed; */
-/*   /* --foreground: #888; */
-/* } */
+:root {
+  --background: #333;
+  --foreground: #1db954;
+}
 
 .logo {
   font-family: "Chewy", system-ui;
