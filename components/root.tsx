@@ -10,7 +10,7 @@ const chewy = Chewy({ subsets: ["latin"], weight: ["400"] });
 const Root = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={`antialiased ${chewy.className}`}>
+      <body className={chewy.className}>
         <Suspense fallback={<CircularProgress />}>
           <div className="flex flex-col justify-between min-h-screen">
             <div>
