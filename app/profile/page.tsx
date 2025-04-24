@@ -1,19 +1,32 @@
-"use client";
-import { Box } from "@mui/material";
-import Profile from "@/components/profile";
-import { useProfileContext } from "@/context/profileContext";
+import QueryWrapper from "@/components/QueryWrapper";
+import SpotifyProfile from "@/components/spotify/SpotifyProfile";
+import { verifyJwt } from "@/lib/jwt";
+import { Providers } from "@/types/types";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default function ProfilePage() {
-  const profileContext = useProfileContext();
+export default async function ProfilePage() {
+  const cookieStore = await cookies();
 
-  if (profileContext.value === null) {
-    return redirect("/sign-in");
+  const d = cookieStore.get("mycookie");
+
+  if (!d) {
+    return redirect("/");
   }
 
-  return (
-    <Box>
-      <Profile profile={profileContext.value} />
-    </Box>
-  );
+  const res = verifyJwt(d.value);
+  if (!res.verified) {
+    return redirect("/");
+  }
+
+  let Content: React.ReactNode;
+  switch (res.claims.provider) {
+    case Providers.spotify:
+      Content = <SpotifyProfile />;
+      break;
+    default:
+      return redirect("/");
+  }
+
+  return <QueryWrapper>{Content}</QueryWrapper>;
 }

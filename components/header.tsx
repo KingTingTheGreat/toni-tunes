@@ -1,10 +1,7 @@
-import { useProfileContext } from "@/context/profileContext";
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function Header() {
-  const profileContext = useProfileContext();
-
   const NavLink = ({
     href,
     children,
@@ -41,11 +38,6 @@ export default function Header() {
         </Link>
       </Typography>
       <Box component="nav" sx={{ display: "flex", padding: "0.5rem" }}>
-        {profileContext.value ? (
-          <NavLink href="/profile">Profile</NavLink>
-        ) : (
-          <NavLink href="/sign-in">Sign In</NavLink>
-        )}
         <NavLink href="/leaderboard">Leaderboard</NavLink>
         <NavLink href="/about">About</NavLink>
       </Box>

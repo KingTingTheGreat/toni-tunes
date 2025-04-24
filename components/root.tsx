@@ -1,19 +1,11 @@
 "use client";
 import { Suspense } from "react";
 import Header from "@/components/header";
-import { ProfileContextProvider } from "@/context/profileContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
 import Footer from "./footer";
-import { ProfileProps } from "./profile";
 
-const Root = ({
-  profile,
-  children,
-}: {
-  profile: ProfileProps | null;
-  children: React.ReactNode;
-}) => {
+const Root = ({ children }: { children: React.ReactNode }) => {
   const theme = createTheme({
     palette: {
       primary: {
@@ -30,21 +22,19 @@ const Root = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <ProfileContextProvider profile={profile}>
-        <html lang="en">
-          <body className="antialiased">
-            <Suspense fallback={<CircularProgress />}>
-              <div className="flex flex-col justify-between min-h-screen">
-                <div>
-                  <Header />
-                  {children}
-                </div>
-                <Footer />
+      <html lang="en">
+        <body className="antialiased">
+          <Suspense fallback={<CircularProgress />}>
+            <div className="flex flex-col justify-between min-h-screen">
+              <div>
+                <Header />
+                {children}
               </div>
-            </Suspense>
-          </body>
-        </html>
-      </ProfileContextProvider>
+              <Footer />
+            </div>
+          </Suspense>
+        </body>
+      </html>
     </ThemeProvider>
   );
 };
