@@ -38,7 +38,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="flex flex-col items-center px-32 py-12">
-      <div className="grid grid-cols-5 gap-6 auto-rows-max">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 auto-rows-max">
         {tracks.map((t) => (
           <TrackDisplay track={t} key={t.uri} />
         ))}
