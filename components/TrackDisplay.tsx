@@ -15,7 +15,7 @@ export default function TrackDisplay({ track }: { track: Track }) {
         </Link>
         <p>{track.name}</p>
         <p>{track.album.name}</p>
-        <p>{track.popularity}</p>
+        <p>Popularity: {track.popularity}</p>
         <div>
           {track.artists.map((a) => (
             <p key={a.uri}>{a.name}</p>

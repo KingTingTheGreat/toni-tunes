@@ -1,4 +1,4 @@
-import { SpotifyCreds } from "@/types/spotifyTypes";
+import { SpotifyCreds, SpotifyUser } from "@/types/spotifyTypes";
 import spotifyRequest from "./spotifyRequest";
 
 export default async function getSpotifyUser(creds: SpotifyCreds) {
@@ -6,5 +6,5 @@ export default async function getSpotifyUser(creds: SpotifyCreds) {
   if (!res) {
     return null;
   }
-  return res.data.json();
+  return (await res.data.json()) as SpotifyUser;
 }

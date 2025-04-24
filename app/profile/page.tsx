@@ -25,7 +25,7 @@ export default async function ProfilePage() {
       Content = <SpotifyProfile />;
       break;
     default:
-      Content = <p>nothing to display</p>;
+      return redirect("/");
   }
 
   return <QueryWrapper>{Content}</QueryWrapper>;

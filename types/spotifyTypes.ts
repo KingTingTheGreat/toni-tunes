@@ -41,3 +41,11 @@ export enum SpotifyTimeRanges {
   medium_term = "medium_term",
   long_term = "long_term",
 }
+
+export type SpotifyUser = {
+  display_name: string;
+  email: string;
+  href: string;
+  id: string;
+  images: SpotifyImage[];
+};
