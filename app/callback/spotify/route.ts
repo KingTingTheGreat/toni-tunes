@@ -1,7 +1,7 @@
 import exchangeSpotifyCode from "@/lib/providers/spotify/exchangeSpotifyCode";
 import { NextRequest, NextResponse } from "next/server";
 import { createJwt } from "@/lib/jwt";
-import { Providers } from "@/types";
+import { Providers } from "@/types/types";
 
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
     createJwt({
       ...data,
       provider: Providers.spotify,
-      lastDbEntry: null,
     }),
     {
       httpOnly: true,

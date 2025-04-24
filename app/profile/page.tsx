@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import Profile from "@/components/profile";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";

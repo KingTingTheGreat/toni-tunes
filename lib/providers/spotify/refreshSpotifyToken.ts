@@ -1,13 +1,10 @@
-import { SpotifyCreds } from "@/types/spotifyTypes";
-
-export default async function exchangeSpotifyCode(
-  code: string,
-): Promise<SpotifyCreds | null> {
+export default async function refreshSpotifyToken(
+  refreshToken: string,
+): Promise<string | null> {
   try {
     const queryParams = new URLSearchParams({
-      grant_type: "authorization_code",
-      code,
-      redirect_uri: process.env.SPOTIFY_REDIRECT_URI as string,
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
     });
 
     const res = await fetch(
@@ -29,10 +26,7 @@ export default async function exchangeSpotifyCode(
 
     const data = await res.json();
 
-    return {
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-    };
+    return data.access_token;
   } catch (e) {
     console.log("error exchanging spotify code", e);
     return null;

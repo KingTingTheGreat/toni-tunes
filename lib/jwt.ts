@@ -1,6 +1,6 @@
 import { createHmac } from "crypto";
 import { base64UrlDecode, base64UrlEncode } from "./b64";
-import { JwtClaims, VerifyJwtRes } from "@/types";
+import { JwtClaims, VerifyJwtRes } from "@/types/types";
 import { decrypt, encrypt } from "./crypt";
 
 const signingKey = process.env.SIGNING_KEY as string;
