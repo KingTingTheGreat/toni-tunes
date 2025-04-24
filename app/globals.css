@@ -3,14 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #333;
-  --foreground: #1db954;
-}
-
-.logo {
-  font-family: "Chewy", system-ui;
-}
+/* :root { */
+/* --background: #333; */
+/* --foreground: #1db954; */
+/* } */
 
 body {
   color: var(--foreground);
