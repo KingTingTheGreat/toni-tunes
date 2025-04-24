@@ -1,22 +1,16 @@
-import { Box, Button, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Box, Typography } from "@mui/material";
+import Link from "next/link";
 
 export default function Footer() {
-  const router = useRouter();
-
   return (
     <Box
       component="footer"
       sx={{ padding: "0.5rem", display: "flex", justifyContent: "center" }}
     >
       <Typography>
-        <Button
-          href="/api/sign-out"
-          onClick={() => router.refresh()}
-          className="p-1"
-        >
+        <Link prefetch={false} href="/api/sign-out" className="p-1">
           Sign Out
-        </Button>
+        </Link>
       </Typography>
     </Box>
   );
