@@ -35,3 +35,9 @@ export type SpotifyTrack = {
   popularity: number;
   external_urls: { spotify: string };
 };
+
+export enum SpotifyTimeRanges {
+  shortTerm = "short_term",
+  mediumTerm = "medium_term",
+  longTerm = "long_term",
+}
