@@ -7,7 +7,7 @@ export default function TrackDisplay({ track }: { track: Track }) {
   return (
     <div
       key={track.uri}
-      className="border-2 rounded-lg flex flex-col justify-around p-4"
+      className="border-2 rounded-lg flex flex-col justify-around p-4 shadow-md"
     >
       <div>
         <Link href={track.external_urls.spotify} target="_blank">

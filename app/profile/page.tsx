@@ -1,8 +1,9 @@
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import QueryWrapper from "@/components/QueryWrapper";
+import SpotifyProfile from "@/components/spotify/profile";
 import { verifyJwt } from "@/lib/jwt";
-import getSpotifyTopTracks from "@/lib/providers/spotify/getSpotifyTopTracks";
-import TrackDisplay from "@/components/TrackDisplay";
+import { Providers } from "@/types/types";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
   const cookieStore = await cookies();
@@ -10,37 +11,22 @@ export default async function ProfilePage() {
   const d = cookieStore.get("mycookie");
 
   if (!d) {
-    return redirect("/sign-in");
+    return redirect("/");
   }
 
   const res = verifyJwt(d.value);
   if (!res.verified) {
-    return redirect("/sign-in");
+    return redirect("/");
   }
 
-  const creds = {
-    accessToken: res.claims.accessToken,
-    refreshToken: res.claims.refreshToken,
-  };
-
-  const tracks = await getSpotifyTopTracks(creds);
-  console.log("tracks", tracks);
-
-  if (!tracks) {
-    return (
-      <div>
-        <p>could not get your top tracks</p>
-      </div>
-    );
+  let Content: React.ReactNode;
+  switch (res.claims.provider) {
+    case Providers.spotify:
+      Content = <SpotifyProfile />;
+      break;
+    default:
+      Content = <p>nothing to display</p>;
   }
 
-  return (
-    <div className="flex flex-col items-center px-32 py-12">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 auto-rows-max">
-        {tracks.map((t) => (
-          <TrackDisplay track={t} key={t.uri} />
-        ))}
-      </div>
-    </div>
-  );
+  return <QueryWrapper>{Content}</QueryWrapper>;
 }

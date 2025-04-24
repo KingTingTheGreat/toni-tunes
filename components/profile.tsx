@@ -2,18 +2,7 @@ import Image from "next/image";
 import ScoreDisplay from "./scoreDisplay";
 import { Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
-export type ScoreElement = {
-  score: number;
-  date: string;
-};
-
-export type ProfileProps = {
-  username: string;
-  name: string;
-  scoreHistory: ScoreElement[];
-  image: string;
-};
+import { ProfileProps } from "@/types/types";
 
 export default function Profile({ profile }: { profile: ProfileProps }) {
   const dim = 150;

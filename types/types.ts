@@ -1,3 +1,4 @@
+import { ScoreElement } from "@/components/profile";
 import { SpotifyTrack } from "./spotifyTypes";
 
 export enum Providers {
@@ -23,3 +24,15 @@ export type VerifyJwtRes =
       claims: JwtClaims;
     }
   | { verified: false };
+
+export type ScoreElement = {
+  score: number;
+  date: string;
+};
+
+export type ProfileProps = {
+  username: string;
+  name: string;
+  scoreHistory: ScoreElement[];
+  image: string;
+};
