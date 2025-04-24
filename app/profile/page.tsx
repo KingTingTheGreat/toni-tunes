@@ -1,9 +1,7 @@
-import { Box } from "@mui/material";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 import getSpotifyTopTracks from "@/lib/providers/spotify/getSpotifyTopTracks";
-import Image from "next/image";
 import TrackDisplay from "@/components/TrackDisplay";
 
 export default async function ProfilePage() {

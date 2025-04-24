@@ -20,8 +20,8 @@ export type SpotifyAlbum = {
   href: string;
   uri: string;
   artists: SpotifyArtist[];
-  releaseDate: string;
-  totalTracks: number;
+  release_date: string;
+  total_tracks: number;
   images: SpotifyImage[];
 };
 
@@ -31,6 +31,7 @@ export type SpotifyTrack = {
   artists: SpotifyArtist[];
   uri: string;
   href: string;
-  trackNumber: number;
+  track_number: number;
   popularity: number;
+  external_urls: { spotify: string };
 };

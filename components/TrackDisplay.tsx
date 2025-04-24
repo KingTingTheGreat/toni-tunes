@@ -1,5 +1,7 @@
 import { Track } from "@/types/types";
+import { OpenInNew } from "@mui/icons-material";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TrackDisplay({ track }: { track: Track }) {
   return (
@@ -8,6 +10,9 @@ export default function TrackDisplay({ track }: { track: Track }) {
       className="border-2 rounded-lg flex flex-col justify-around p-4"
     >
       <div>
+        <Link href={track.external_urls.spotify} target="_blank">
+          <OpenInNew />
+        </Link>
         <p>{track.name}</p>
         <p>{track.album.name}</p>
         <p>{track.popularity}</p>
