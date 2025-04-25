@@ -2,8 +2,7 @@
 import TrackDisplay from "@/components/TrackDisplay";
 import calculateSpotifyToniScore from "@/lib/providers/spotify/calculateSpotifyToniScore";
 import getSpotifyTopTracks from "@/lib/providers/spotify/getSpotifyTopTracks";
-import getSpotifyUser from "@/lib/providers/spotify/getSpotifyUser";
-import { SpotifyTimeRanges, SpotifyUser } from "@/types/spotifyTypes";
+import { SpotifyTimeRanges } from "@/types/spotifyTypes";
 import {
   CircularProgress,
   ToggleButton,
@@ -15,7 +14,6 @@ import { useEffect, useState } from "react";
 export default function SpotifyProfile() {
   const queryClient = useQueryClient();
   const [timeRange, setTimeRange] = useState(SpotifyTimeRanges.short_term);
-  const [user, setUser] = useState<SpotifyUser | null>(null);
 
   const tracks = useQuery({
     queryKey: [timeRange],
@@ -36,10 +34,6 @@ export default function SpotifyProfile() {
         });
       });
   }, [queryClient]);
-
-  useEffect(() => {
-    getSpotifyUser().then((p) => setUser(p));
-  }, []);
 
   return (
     <div className="flex flex-col items-center px-32 py-12">
