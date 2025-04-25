@@ -1,15 +1,32 @@
-import { SpotifyCreds, SpotifyTimeRanges } from "@/types/spotifyTypes";
+"use server";
+import { SpotifyTimeRanges } from "@/types/spotifyTypes";
 import spotifyRequest from "./spotifyRequest";
 import { SpotifyTrack } from "@/types/spotifyTypes";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/lib/jwt";
 
 export default async function getSpotifyTopTracks(
-  creds: SpotifyCreds,
-  timeRange?: SpotifyTimeRanges,
+  timeRange: SpotifyTimeRanges,
 ): Promise<SpotifyTrack[] | null> {
-  const tr = timeRange || SpotifyTimeRanges.short_term;
+  const cookieStore = await cookies();
+
+  const d = cookieStore.get("mycookie");
+
+  if (!d) {
+    return null;
+  }
+
+  const jwtRes = verifyJwt(d.value);
+  if (!jwtRes.verified) {
+    return null;
+  }
+
   const res = await spotifyRequest(
-    creds,
-    `https://api.spotify.com/v1/me/top/tracks?time_range=${tr.toString()}&limit=50`,
+    {
+      accessToken: jwtRes.claims.accessToken,
+      refreshToken: jwtRes.claims.refreshToken,
+    },
+    `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange.toString()}&limit=50`,
   );
 
   if (!res) {
@@ -17,8 +34,6 @@ export default async function getSpotifyTopTracks(
   }
 
   const data = await res.data.json();
-
-  console.log("data", data);
 
   return data.items;
 }

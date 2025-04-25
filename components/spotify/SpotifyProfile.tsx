@@ -1,7 +1,7 @@
 "use client";
 import TrackDisplay from "@/components/TrackDisplay";
 import calculateSpotifyToniScore from "@/lib/providers/spotify/calculateSpotifyToniScore";
-import getSpotifyProfile from "@/lib/providers/spotify/getSpotifyProfile";
+import getSpotifyTopTracks from "@/lib/providers/spotify/getSpotifyTopTracks";
 import { SpotifyTimeRanges } from "@/types/spotifyTypes";
 import {
   CircularProgress,
@@ -17,19 +17,22 @@ export default function SpotifyProfile() {
 
   const tracks = useQuery({
     queryKey: [timeRange],
-    queryFn: () => getSpotifyProfile(timeRange),
+    queryFn: () => getSpotifyTopTracks(timeRange),
     staleTime: 5 * 1000 * 60, // five minutes
   });
 
   // prefetch other time ranges
+  // reverse since first one is called by default
   useEffect(() => {
-    Object.keys(SpotifyTimeRanges).forEach((range) => {
-      queryClient.prefetchQuery({
-        queryKey: [range],
-        queryFn: () => getSpotifyProfile(range as SpotifyTimeRanges),
-        staleTime: 5 * 60 * 1000,
+    Object.keys(SpotifyTimeRanges)
+      .reverse()
+      .forEach((range) => {
+        queryClient.prefetchQuery({
+          queryKey: [range],
+          queryFn: () => getSpotifyTopTracks(range as SpotifyTimeRanges),
+          staleTime: 5 * 60 * 1000,
+        });
       });
-    });
   }, [queryClient]);
 
   return (

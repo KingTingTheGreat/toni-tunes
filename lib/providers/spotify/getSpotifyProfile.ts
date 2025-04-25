@@ -1,10 +1,9 @@
 "use server";
 import { verifyJwt } from "@/lib/jwt";
 import { cookies } from "next/headers";
-import getSpotifyTopTracks from "./getSpotifyTopTracks";
-import { SpotifyTimeRanges } from "@/types/spotifyTypes";
+import spotifyRequest from "./spotifyRequest";
 
-export default async function getSpotifyProfile(timeRange?: SpotifyTimeRanges) {
+export default async function getSpotifyProfile() {
   const cookieStore = await cookies();
 
   const d = cookieStore.get("mycookie");
@@ -13,23 +12,26 @@ export default async function getSpotifyProfile(timeRange?: SpotifyTimeRanges) {
     return null;
   }
 
-  const res = verifyJwt(d.value);
-  if (!res.verified) {
+  const jwtRes = verifyJwt(d.value);
+  if (!jwtRes.verified) {
     return null;
   }
 
-  const creds = {
-    accessToken: res.claims.accessToken,
-    refreshToken: res.claims.refreshToken,
-  };
+  const res = await spotifyRequest(
+    {
+      accessToken: jwtRes.claims.accessToken,
+      refreshToken: jwtRes.claims.refreshToken,
+    },
+    "https://api.spotify.com/v1/me",
+  );
 
-  console.log("creds", creds);
-  const tracks = await getSpotifyTopTracks(creds, timeRange);
-  console.log("tracks after get", tracks);
-
-  if (!tracks) {
+  if (!res) {
     return null;
   }
 
-  return tracks;
+  const data = await res.data.json();
+
+  console.log("profile data", data);
+
+  return data;
 }
