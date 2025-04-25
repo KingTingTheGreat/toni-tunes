@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { SentimentSatisfiedAlt } from "@mui/icons-material";
 import SignIn from "@/components/SignIn";
+import HandWave from "@/components/HandWave";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -20,6 +22,10 @@ export default function Home() {
           music and give you some recomendabababas!
         </Typography>
         <SentimentSatisfiedAlt fontSize="large" />
+        <div className="flex p-8">
+          <Image src="/toni.svg" alt="Mr.Toni" width={180} height={180} />
+          <HandWave />
+        </div>
         <SignIn />
       </Box>
     </Box>
