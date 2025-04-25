@@ -1,8 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { SentimentSatisfiedAlt } from "@mui/icons-material";
 import SignIn from "@/components/SignIn";
-import HandWave from "@/components/HandWave";
-import Image from "next/image";
 import WavingToni from "@/components/WavingToni";
 
 export default function Home() {
