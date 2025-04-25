@@ -15,6 +15,8 @@ export type JwtClaims = {
   lastScore?: number;
   topSongs?: Track;
   lastFetched?: Date;
+  picture?: string;
+  name?: string;
 };
 
 export type VerifyJwtRes =

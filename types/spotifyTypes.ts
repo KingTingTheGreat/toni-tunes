@@ -45,7 +45,10 @@ export enum SpotifyTimeRanges {
 export type SpotifyUser = {
   display_name: string;
   email: string;
+  external_urls: { spotify: string };
   href: string;
   id: string;
   images: SpotifyImage[];
+  type: string;
+  uri: string;
 };

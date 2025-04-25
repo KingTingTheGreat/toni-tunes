@@ -1,10 +1,43 @@
-import { SpotifyCreds, SpotifyUser } from "@/types/spotifyTypes";
+"use server";
+import { createJwt, verifyJwt } from "@/lib/jwt";
+import { cookies } from "next/headers";
 import spotifyRequest from "./spotifyRequest";
+import { SpotifyUser } from "@/types/spotifyTypes";
 
-export default async function getSpotifyUser(creds: SpotifyCreds) {
-  const res = await spotifyRequest(creds, "https://api.spotify.com/v1/me");
+export default async function getSpotifyUser() {
+  const cookieStore = await cookies();
+
+  const d = cookieStore.get("mycookie");
+
+  if (!d) {
+    return null;
+  }
+
+  const jwtRes = verifyJwt(d.value);
+  if (!jwtRes.verified) {
+    return null;
+  }
+
+  const res = await spotifyRequest(
+    {
+      accessToken: jwtRes.claims.accessToken,
+      refreshToken: jwtRes.claims.refreshToken,
+    },
+    "https://api.spotify.com/v1/me",
+  );
+
   if (!res) {
     return null;
   }
-  return (await res.data.json()) as SpotifyUser;
+
+  const data = (await res.data.json()) as SpotifyUser;
+
+  const newJwt = createJwt({
+    ...jwtRes.claims,
+    picture: data.images[0].url,
+    name: data.display_name,
+  });
+  cookieStore.set("mycookie", newJwt);
+
+  return data;
 }
