@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ScoreDisplay from "./scoreDisplay";
+import ScoreDisplay from "./ScoreDisplay";
 import { Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { ProfileProps } from "@/types/types";

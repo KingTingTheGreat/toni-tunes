@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { SentimentSatisfiedAlt } from "@mui/icons-material";
-import SignIn from "@/components/sign-in";
+import SignIn from "@/components/SignIn";
 
 export default function Home() {
   return (

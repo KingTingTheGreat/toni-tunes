@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Suspense } from "react";
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import { CircularProgress } from "@mui/material";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Toni Tunes",
