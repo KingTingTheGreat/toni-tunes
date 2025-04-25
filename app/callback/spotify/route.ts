@@ -8,12 +8,12 @@ export async function GET(req: NextRequest) {
   const error = req.nextUrl.searchParams.get("error");
 
   if (error || !code) {
-    return NextResponse.redirect("/sign-in");
+    return NextResponse.redirect(req.nextUrl.origin + "/sign-in");
   }
 
   const data = await exchangeSpotifyCode(code);
   if (!data) {
-    return NextResponse.redirect("/sign-in");
+    return NextResponse.redirect(req.nextUrl.origin + "/sign-in");
   }
 
   console.log("data", data);
