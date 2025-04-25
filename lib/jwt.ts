@@ -1,22 +1,28 @@
-import { createHmac } from "crypto";
+import { createSign, createVerify } from "crypto";
 import { base64UrlDecode, base64UrlEncode } from "./b64";
 import { JwtClaims, VerifyJwtRes } from "@/types/types";
 import { decrypt, encrypt } from "./crypt";
 
-const signingKey = process.env.SIGNING_KEY as string;
-if (!signingKey) {
-  throw new Error("SIGNING_KEY is undefined");
+const privateKey = process.env.SIGNING_KEY_PRIVATE as string;
+const publicKey = process.env.NEXT_PUBLIC_SIGNING_KEY_PUBLIC as string;
+if (!privateKey || !publicKey) {
+  throw new Error("private or public signing key is undefined");
 }
 
-const jwtHeader = base64UrlEncode(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+const jwtHeader = base64UrlEncode(JSON.stringify({ alg: "RS256", typ: "JWT" }));
 
 function jwtSignature(data: string): string {
-  return createHmac("sha256", signingKey)
-    .update(data)
-    .digest("base64")
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
+  const signer = createSign("RSA-SHA256");
+  signer.update(data);
+  signer.end();
+  return signer.sign(privateKey, "base64url");
+}
+
+function verifySignature(data: string, signature: string): boolean {
+  const verifier = createVerify("RSA-SHA256");
+  verifier.update(data);
+  verifier.end();
+  return verifier.verify(publicKey, signature, "base64url");
 }
 
 export function createJwt(claims: JwtClaims): string {
@@ -45,7 +51,7 @@ export function verifyJwt(jwt: string): VerifyJwtRes {
   const payload = jwtParts[1];
   const signature = jwtParts[2];
 
-  if (signature !== jwtSignature(`${header}.${payload}`)) {
+  if (!verifySignature(`${header}.${payload}`, signature)) {
     return { verified: false };
   }
 
