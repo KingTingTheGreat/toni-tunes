@@ -1,9 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function HandWave() {
+  const [infite, setInfinite] = useState(false);
+
   return (
     <motion.svg
+      onClick={() => setInfinite(true)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 64 64"
       width="200"
@@ -13,7 +17,7 @@ export default function HandWave() {
       animate={{ rotate: [60, 20, 60, 20, 60] }}
       transition={{
         duration: 1.5,
-        repeat: Infinity,
+        repeat: infite ? Infinity : 10,
         repeatType: "loop",
         ease: "easeInOut",
       }}
