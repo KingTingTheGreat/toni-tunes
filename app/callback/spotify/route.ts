@@ -31,6 +31,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       secure: process.env.ENVIRONMENT === "prod",
       path: "/",
+      maxAge: 100 * 365 * 24 * 60 * 60 * 1000,
     },
   );
 
