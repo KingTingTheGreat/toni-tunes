@@ -1,6 +1,4 @@
 "use client";
-import { useTheme } from "@mui/material/styles";
-import { Box, Typography } from "@mui/material";
 import { LineChart } from "@mui/x-charts";
 import { ScoreElement } from "@/types/types";
 
@@ -9,13 +7,9 @@ export default function ScoreDisplay({
 }: {
   scoreHistory: ScoreElement[];
 }) {
-  const theme = useTheme();
-
   return (
-    <Box>
-      <Typography component="h3">
-        Current Score: {scoreHistory[scoreHistory.length - 1].score}
-      </Typography>
+    <div>
+      <h3>Current Score: {scoreHistory[scoreHistory.length - 1].score}</h3>
       <LineChart
         xAxis={[
           {
@@ -36,7 +30,6 @@ export default function ScoreDisplay({
         series={[
           {
             data: scoreHistory.map((elem) => elem.score),
-            color: theme.palette.primary.main,
           },
         ]}
         width={500}
@@ -46,6 +39,6 @@ export default function ScoreDisplay({
         }}
         sx={{ backgroundColor: "white" }}
       />
-    </Box>
+    </div>
   );
 }

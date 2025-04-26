@@ -1,6 +1,5 @@
 import Image from "next/image";
 import ScoreDisplay from "./ScoreDisplay";
-import { Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { ProfileProps } from "@/types/types";
 
@@ -8,15 +7,7 @@ export default function Profile({ profile }: { profile: ProfileProps }) {
   const dim = 150;
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "0.5rem",
-        margin: "0.5rem",
-      }}
-    >
+    <div className="flex flex-col items-center p-2 m-2">
       {profile.image ? (
         <Image
           src={profile.image}
@@ -31,6 +22,6 @@ export default function Profile({ profile }: { profile: ProfileProps }) {
       {profile.scoreHistory && (
         <ScoreDisplay scoreHistory={profile.scoreHistory} />
       )}
-    </Box>
+    </div>
   );
 }

@@ -22,7 +22,7 @@ export default async function RootLayout({
           <div className="flex flex-col justify-between min-h-screen">
             <div>
               <Header />
-              {children}
+              <div className="flex justify-center">{children}</div>
             </div>
             <Footer />
           </div>

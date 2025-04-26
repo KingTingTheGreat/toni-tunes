@@ -1,5 +1,4 @@
 // import Leaderboard, { LeaderboardProfile } from "@/components/leaderboard";
-import { Box, Typography } from "@mui/material";
 
 export const dynamic = "force-dynamic";
 
@@ -9,17 +8,15 @@ export default async function LeaderboardPage() {
   //   const users: LeaderboardProfile[] = await res.json();
   //
   //   return (
-  //     <Box>
+  //   <div>
   //       <Leaderboard users={users} />;
-  //     </Box>
+  //   </div>
   //   );
   // } catch {
   return (
-    <Box>
-      <Typography component="p">
-        something went wrong. please try again.
-      </Typography>
-    </Box>
+    <div>
+      <p>something went wrong. please try again.</p>
+    </div>
   );
   // }
 }

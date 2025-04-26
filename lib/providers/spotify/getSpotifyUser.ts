@@ -3,11 +3,12 @@ import { createJwt, verifyJwt } from "@/lib/jwt";
 import { cookies } from "next/headers";
 import spotifyRequest from "./spotifyRequest";
 import { SpotifyUser } from "@/types/spotifyTypes";
+import { AUTH_COOKIE } from "@/cookie";
 
 export default async function getSpotifyUser() {
   const cookieStore = await cookies();
 
-  const d = cookieStore.get("mycookie");
+  const d = cookieStore.get(AUTH_COOKIE);
 
   if (!d) {
     return null;
@@ -37,7 +38,7 @@ export default async function getSpotifyUser() {
     picture: data.images[0].url,
     name: data.display_name,
   });
-  cookieStore.set("mycookie", newJwt);
+  cookieStore.set(AUTH_COOKIE, newJwt);
 
   return data;
 }

@@ -4,13 +4,14 @@ import spotifyRequest from "./spotifyRequest";
 import { SpotifyTrack } from "@/types/spotifyTypes";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
+import { AUTH_COOKIE } from "@/cookie";
 
 export default async function getSpotifyTopTracks(
   timeRange: SpotifyTimeRanges,
 ): Promise<SpotifyTrack[] | null> {
   const cookieStore = await cookies();
 
-  const d = cookieStore.get("mycookie");
+  const d = cookieStore.get(AUTH_COOKIE);
 
   if (!d) {
     return null;

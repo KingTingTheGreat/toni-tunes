@@ -1,5 +1,5 @@
+import { AUTH_COOKIE } from "@/cookie";
 import { verifyJwt } from "@/lib/jwt";
-import { Box, Typography } from "@mui/material";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import Link from "next/link";
 function isSignedIn(
   cookieStore: ReadonlyRequestCookies,
 ): { signedIn: false } | { signedIn: true; picture: string | null } {
-  const d = cookieStore.get("mycookie");
+  const d = cookieStore.get(AUTH_COOKIE);
   if (!d) {
     return { signedIn: false };
   }
@@ -37,33 +37,21 @@ export default async function Header() {
     children: React.ReactNode;
     prefetch?: boolean;
   }) => (
-    <Typography>
-      <Link
-        href={href}
-        prefetch={prefetch}
-        className="hover:underline m-2 p-2 text-xl transition-all font-medium"
-      >
-        {children}
-      </Link>
-    </Typography>
+    <Link
+      href={href}
+      prefetch={prefetch}
+      className="hover:underline m-2 p-2 text-xl transition-all font-medium"
+    >
+      {children}
+    </Link>
   );
 
   return (
-    <Box
-      component="header"
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0.5rem",
-      }}
-    >
-      <Typography>
-        <Link href="/" className="text-5xl logo">
-          Toni Tunes
-        </Link>
-      </Typography>
-      <Box component="nav" sx={{ display: "flex", padding: "0.5rem" }}>
+    <header className="flex justify-between items-center p-2">
+      <Link href="/" className="text-5xl logo">
+        Toni Tunes
+      </Link>
+      <nav className="flex">
         {!d.signedIn ? (
           <NavLink href="/sign-in">Sign In</NavLink>
         ) : (
@@ -84,7 +72,7 @@ export default async function Header() {
         )}
         <NavLink href="/leaderboard">Leaderboard</NavLink>
         <NavLink href="/about">About</NavLink>
-      </Box>
-    </Box>
+      </nav>
+    </header>
   );
 }

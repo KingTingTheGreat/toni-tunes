@@ -1,13 +1,10 @@
 "use client";
-import { useTheme } from "@mui/material/styles";
 import {
-  Box,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 
 export type LeaderboardProfile = {
@@ -21,10 +18,9 @@ export default function Leaderboard({
 }: {
   users: LeaderboardProfile[];
 }) {
-  const theme = useTheme();
   const headerStyle = {
     fontSize: "1.25rem",
-    border: `2px solid ${theme.palette.primary.main}`,
+    border: `2px solid`,
   };
 
   const LeaderboardRow = ({
@@ -38,7 +34,7 @@ export default function Leaderboard({
   }) => {
     const contentStyle = {
       fontSize: "1rem",
-      border: `2px solid ${theme.palette.primary.main}`,
+      border: `2px solid`,
     };
 
     return (
@@ -70,21 +66,8 @@ export default function Leaderboard({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "0.5rem",
-        margin: "0.5rem",
-      }}
-    >
-      <Typography
-        component="h2"
-        sx={{ fontSize: "2.5rem", padding: "0.25rem", margin: "0.25rem" }}
-      >
-        Leaderboard
-      </Typography>
+    <div className="flex flex-col items-center m-2 p-2">
+      <h2 className="text-4xl p-1 m-1">Leaderboard</h2>
       <Table sx={{ width: 200 }}>
         <TableHead>
           <TableRow>
@@ -104,6 +87,6 @@ export default function Leaderboard({
           ))}
         </TableBody>
       </Table>
-    </Box>
+    </div>
   );
 }
