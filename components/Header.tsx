@@ -40,7 +40,7 @@ export default async function Header() {
     <Link
       href={href}
       prefetch={prefetch}
-      className="hover:underline m-2 p-2 text-xl transition-all font-medium"
+      className="hover:underline m-2 md:m-4 text-base md:text-xl transition-all font-medium"
     >
       {children}
     </Link>
@@ -48,7 +48,7 @@ export default async function Header() {
 
   return (
     <header className="flex justify-between items-center p-2">
-      <Link href="/" className="text-5xl logo">
+      <Link href="/" className="text-2xl md:text-5xl logo m-1">
         Toni Tunes
       </Link>
       <nav className="flex">

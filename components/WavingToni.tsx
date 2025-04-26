@@ -7,14 +7,15 @@ export default function WavingToni() {
   const [infinite, setInfinite] = useState(false);
 
   return (
-    <div className="flex p-8" onClick={() => setInfinite(true)}>
+    <div className="flex p-4" onClick={() => setInfinite(true)}>
+      <div style={{ width: 200, height: 200 }} className="md:hidden"></div>
       <Image src="/toni.svg" alt="Mr.Toni" width={180} height={180} />
       <motion.svg
         key={infinite ? "infinite" : "once"}
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 64 64"
-        width="200"
-        height="200"
+        viewBox="15 0 25 40"
+        width="130"
+        height="130"
         style={{ originX: "30%", originY: "70%" }}
         initial={{ x: -50, y: 30 }}
         animate={{ rotate: [60, 20, 60, 20, 60] }}
