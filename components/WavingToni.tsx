@@ -16,9 +16,9 @@ export default function WavingToni() {
         viewBox="15 0 25 40"
         width="130"
         height="130"
-        style={{ originX: "30%", originY: "70%" }}
+        style={{ originX: "30%", originY: "80%" }}
         initial={{ x: -50, y: 30 }}
-        animate={{ rotate: [60, 20, 60, 20, 60] }}
+        animate={{ rotate: [50, 10, 50, 10, 50] }}
         transition={{
           duration: 1.5,
           repeat: infinite ? Infinity : 2,
