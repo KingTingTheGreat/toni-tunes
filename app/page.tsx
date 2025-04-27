@@ -1,4 +1,3 @@
-import { SentimentSatisfiedAlt } from "@mui/icons-material";
 import WavingToni from "@/components/WavingToni";
 
 export default function Home() {
@@ -9,7 +8,7 @@ export default function Home() {
         <p className="text-xl w-72 m-4">
           Hi, I&apos;m Mr.Toni! Sign in with Spotify, then I will rate your
           music and give you some recomendabababas!{" "}
-          <SentimentSatisfiedAlt fontSize="medium" />
+          <span className="text-2xl">☺</span>
         </p>
         <WavingToni />
       </div>

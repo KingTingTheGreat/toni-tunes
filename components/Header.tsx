@@ -1,32 +1,10 @@
-import { AUTH_COOKIE } from "@/cookie";
-import { verifyJwt } from "@/lib/jwt";
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import cookieStoreToAuthJwtRes from "@/cookies/cookieStoreToAuthJwtRes";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-function isSignedIn(
-  cookieStore: ReadonlyRequestCookies,
-): { signedIn: false } | { signedIn: true; picture: string | null } {
-  const d = cookieStore.get(AUTH_COOKIE);
-  if (!d) {
-    return { signedIn: false };
-  }
-
-  const jwtRes = verifyJwt(d.value);
-  if (!jwtRes.verified) {
-    return { signedIn: false };
-  }
-
-  if (jwtRes.claims.picture) {
-    return { signedIn: true, picture: jwtRes.claims.picture };
-  }
-
-  return { signedIn: true, picture: null };
-}
-
 export default async function Header() {
   const cookieStore = await cookies();
-  const d = isSignedIn(cookieStore);
+  const authRes = cookieStoreToAuthJwtRes(cookieStore);
 
   const NavLink = ({
     href,
@@ -52,14 +30,14 @@ export default async function Header() {
         Toni Tunes
       </Link>
       <nav className="flex">
-        {!d.signedIn ? (
+        {!authRes.verified ? (
           <NavLink href="/sign-in">Sign In</NavLink>
         ) : (
           <NavLink href="/profile">
             Profile
-            {/*{d.picture ? (
+            {/* {authRes.claims.picture ? (
               <Image
-                src={d.picture}
+                src={authRes.claims.picture}
                 alt={"profile picture"}
                 width={40}
                 height={40}

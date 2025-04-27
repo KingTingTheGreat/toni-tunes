@@ -2,7 +2,7 @@ import exchangeSpotifyCode from "@/lib/providers/spotify/exchangeSpotifyCode";
 import { NextRequest, NextResponse } from "next/server";
 import { createJwt } from "@/lib/jwt";
 import { Providers } from "@/types/types";
-import { AUTH_COOKIE } from "@/cookie";
+import { AUTH_COOKIE } from "@/cookies/cookieNames";
 
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
